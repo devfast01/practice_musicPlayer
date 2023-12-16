@@ -21,5 +21,12 @@
         <item name="android:textSize">15sp</item>
     </style>
 
+    <style name="Base.Theme.Practice_musicPlayer.fragment">
+        <item name="android:background">@color/fragmentBG</item>
+        <item name="android:textColor">@color/surfaceColor</item>
+        <item name="android:fontFamily">@font/medium</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 
 </resources>
