@@ -7,11 +7,18 @@
 
     <style name="Theme.Practice_musicPlayer" parent="Base.Theme.Practice_musicPlayer" />
 
-    <style name="Theme.Music.Font" parent="Theme.Music">
+    <style name="Theme.Music.Font" parent="Base.Theme.Practice_musicPlayer">
         <item name="background">@color/white</item>
         <item name="android:textColor">@color/onWhite</item>
         <item name="android:fontFamily">@font/bold</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Base.Theme.Practice_musicPlayer.playlist">
+        <item name="android:background">@color/orange</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
 
