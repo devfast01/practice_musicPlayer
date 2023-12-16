@@ -69,7 +69,7 @@
             android:contentDescription="@string/cover"
             android:src="@drawable/heart_fragment"
 
-            />
+            tools:ignore="TouchTargetSizeCheck" />
 
         <ImageButton
             android:id="@+id/fragmentButton"
@@ -81,7 +81,8 @@
             android:layout_marginEnd="10dp"
             android:contentDescription="@string/cover"
             android:src="@drawable/play_now"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            tools:ignore="TouchTargetSizeCheck" />
 
     </RelativeLayout>
 
