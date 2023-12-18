@@ -1,18 +1,32 @@
 package com.example.practice_musicplayer
 
 import android.content.Intent
+import android.media.MediaMetadataRetriever
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.recyclerview.widget.RecyclerView
 import com.example.practice_musicplayer.activities.AboutActivity
+import com.example.practice_musicplayer.activities.FavouriteActivity
 import com.example.practice_musicplayer.activities.FeedbackActivity
+import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.databinding.ActivityMainBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.ArrayList
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var toggle: ActionBarDrawerToggle
+    companion object {
+        var isSearching: Boolean = false
+        lateinit var songList: ArrayList<MusicClass>
+        lateinit var recyclerView: RecyclerView
+        lateinit var musicListSearch: ArrayList<MusicClass>
+        var playNextList: ArrayList<MusicClass> = ArrayList()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,3 +76,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
+
+
+

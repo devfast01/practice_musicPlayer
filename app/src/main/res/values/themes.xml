@@ -13,7 +13,11 @@
         <item name="android:fontFamily">@font/bold</item>
         <item name="android:textSize">20sp</item>
     </style>
-
+    <style name="Base.Theme.Practice_musicPlayer.Single">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
     <style name="Base.Theme.Practice_musicPlayer.playlist">
         <item name="android:background">@color/orange</item>
         <item name="android:textColor">@color/blue</item>
@@ -28,9 +32,43 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="Base.Theme.Practice_musicPlayer.FontInterface">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Base.Theme.Practice_musicPlayer.FontColor">
+        <item name="android:textColor">@color/lightBlue</item>
+    </style>
+
     <style name="roundedImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
+
+    <style name="Base.Theme.Practice_musicPlayer.progressBar">
+        <item name="android:progressBackgroundTint">@color/black</item>
+        <item name="android:progressTint">@color/blue</item>
+        <item name="android:thumbTint">@color/blue</item>
+    </style>
+
+    <style name="Base.Theme.Practice_musicPlayer.IconFillColor">
+        <item name="tint">@color/blue</item>
+    </style>
+
+    <style name="Base.Theme.Practice_musicPlayer.IconFillColorTransparent">
+        <item name="tint">#CB0B0B0B</item>
+    </style>
+
+    <style name="Base.Theme.Practice_musicPlayer.IconFillColor1">
+        <item name="tint">@color/green</item>
+    </style>
+
+
+    <style name="Base.Theme.Practice_musicPlayer.FontColorDetails">
+        <item name="android:textColor">@color/blue</item>
+    </style>
+
 
 </resources>
