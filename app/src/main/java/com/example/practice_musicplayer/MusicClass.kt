@@ -17,6 +17,17 @@ data class MusicClass(
     val artUri: String,
 )
 
+class Playlist {
+    lateinit var name: String
+    lateinit var playlist: ArrayList<MusicClass>
+    lateinit var createdBy: String
+    lateinit var createdOn: String
+}
+
+class MusicPlaylist {
+    var ref: ArrayList<Playlist> = ArrayList()
+}
+
 fun exitApplication() {
 
     exitProcess(1)
