@@ -7,12 +7,12 @@ import kotlin.system.exitProcess
 
 data class MusicClass(
     val id: String,
-    val title: String,
-    val album: String,
-    val length: Long = 0,
-    val artist: String,
-    val path: String,
-    val artUri: String,
+    val date: String,
+    var name: String,
+    val duration: String,
+    var artist: String,
+    var coverArtUrl: String,
+    var url: String
 )
 
 class Playlist {
@@ -38,15 +38,6 @@ fun getImageArt(path: String): ByteArray? {
 }
 
 
-
-fun checkPlaylist(playlist: ArrayList<MusicClass>): ArrayList<MusicClass> {
-    playlist.forEachIndexed { index, music ->
-        val file = File(music.path)
-        if (!file.exists())
-            playlist.removeAt(index)
-    }
-    return playlist
-}
 
 fun formatDuration(duration: Long): String {
     val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)

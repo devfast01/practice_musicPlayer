@@ -1,5 +1,6 @@
 package com.example.practice_musicplayer.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -28,8 +29,6 @@ class MusicAdapter(
         val titleView = binding.titleView
         val albumName = binding.albumName
         val imageView = binding.imageView
-        val duration = binding.duration
-        val root = binding.root
     }
 
 
@@ -45,9 +44,8 @@ class MusicAdapter(
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
 
-        holder.titleView.text = musicList[position].title
+        holder.titleView.text = musicList[position].name
         holder.albumName.text = musicList[position].artist
-        holder.duration.text = formatDuration(musicList[position].length)
 
         val myOptions = RequestOptions()
             .centerCrop()
@@ -56,22 +54,15 @@ class MusicAdapter(
         Glide
             .with(context)
             .applyDefaultRequestOptions(myOptions)
-            .load(musicList[position].artUri)
+            .load(musicList[position].coverArtUrl)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .error(R.drawable.image_as_cover)
             .into(holder.imageView)
-
 
     }
 
     override fun getItemCount(): Int {
         return musicList.size
-    }
-
-    fun updateMusicList(searchList: ArrayList<MusicClass>) {
-        musicList = ArrayList()
-        musicList.addAll(searchList)
-        notifyDataSetChanged()
     }
 
 

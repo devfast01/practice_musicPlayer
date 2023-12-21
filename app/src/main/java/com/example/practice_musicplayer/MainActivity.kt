@@ -10,6 +10,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -20,9 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practice_musicplayer.adapters.MusicAdapter
 import com.example.practice_musicplayer.databinding.ActivityMainBinding
+import com.example.practice_musicplayer.utils.RetrofitService
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.util.ArrayList
 import kotlin.system.exitProcess
@@ -31,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var musicAdapter: MusicAdapter
     private lateinit var toggle: ActionBarDrawerToggle
     private val myBroadcastReceiver = MyBroadcastReceiver()
+    private val apiService = RetrofitService.getInstance()
 
     companion object {
         lateinit var songList: ArrayList<MusicClass>
@@ -91,8 +97,38 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun init() {
+    private fun getNewSongs() {
+        val apiService =
+            apiService.getNewSongs(
+            )
 
+        apiService?.enqueue(object : Callback<String?> {
+            override fun onResponse(call: Call<String?>, response: Response<String?>) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        val jsonresponse: String = response.body().toString()
+                        // on below line we are initializing our adapter.
+                        Log.d("response", jsonresponse.toString())
+                        recycleNewSongs(jsonresponse)
+                    } else {
+                        Log.i(
+                            "onEmptyResponse",
+                            "Returned empty response"
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<String?>, t: Throwable) {
+                Log.e(
+                    "ERROR",
+                    t.message.toString()
+                )
+            }
+        })
+    }
+
+    private fun init() {
 
         recyclerView = binding.listView
 

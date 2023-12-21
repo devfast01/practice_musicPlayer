@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity"
-    tools:openDrawer="start">
+    tools:context=".MainActivity">
+<!--    tools:openDrawer="start">-->
 
     <!--    for refreshing layout on swipe from top-->
     <com.simform.refresh.SSPullToRefreshLayout
@@ -48,36 +48,6 @@
 
             </com.google.android.material.appbar.MaterialToolbar>
 
-            <LinearLayout
-                android:id="@+id/layoutPlaylist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:paddingHorizontal="15dp"
-                android:paddingBottom="7dp"
-                app:layout_constraintBottom_toTopOf="@id/listView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-                <include
-                    android:id="@+id/likedSongs"
-                    layout="@layout/liked_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1" />
-
-                <include
-                    android:id="@+id/playlistView"
-                    layout="@layout/playlist_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listView"
@@ -90,7 +60,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/nowPlaying"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutPlaylist"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 app:spanCount="1" />
 
             <androidx.fragment.app.FragmentContainerView
