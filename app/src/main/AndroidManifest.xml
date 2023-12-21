@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,27 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Practice_musicPlayer"
         tools:targetApi="31">
-        <activity
-            android:name=".activities.SelectionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.PlaylistActivityDetails"
-            android:exported="false" />
-        <activity
-            android:name=".activities.PlaylistActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.FavouriteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.MusicInterface"
-            android:exported="false" />
-        <activity
-            android:name=".activities.AboutActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.FeedbackActivity"
-            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

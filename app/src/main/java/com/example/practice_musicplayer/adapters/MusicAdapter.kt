@@ -12,9 +12,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.practice_musicplayer.MainActivity
 import com.example.practice_musicplayer.MusicClass
 import com.example.practice_musicplayer.R
-import com.example.practice_musicplayer.activities.MusicInterface
-import com.example.practice_musicplayer.activities.PlaylistActivity
-import com.example.practice_musicplayer.activities.PlaylistActivityDetails
 import com.example.practice_musicplayer.databinding.SingleLayoutBinding
 import com.example.practice_musicplayer.formatDuration
 import com.google.android.material.snackbar.Snackbar
@@ -63,64 +60,12 @@ class MusicAdapter(
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .error(R.drawable.image_as_cover)
             .into(holder.imageView)
-        if (!selectionActivity) {
-            holder.root.setOnLongClickListener {
-                try {
-                    MusicInterface.musicList.add(
-                        index = MusicInterface.songPosition + MusicInterface.counter + 1,
-                        element = musicList[position]
-                    )
-                    MusicInterface.counter++
-                    Snackbar.make(context, holder.root, "Added To Queue", 2000).show()
-                } catch (e: Exception) {
-                    Snackbar.make(context, holder.root, "Play A Song First!", 2000).show()
-                }
-                return@setOnLongClickListener true
-            }
-        }
-        when {
-            playlistDetails -> {
-                holder.root.setOnClickListener {
-                    sendIntent(position = position, parameter = "PlaylistDetailsAdapter")
-                }
-            }
 
-            selectionActivity -> {
-                holder.root.setOnClickListener {
-                    if (addSong(musicList[position]))
-                        holder.root.setBackgroundResource(R.drawable.bg_selection)
-                    else
-                        holder.root.setBackgroundColor(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.unSelectBG
-                            )
-                        )
 
-                }
-            }
-            else -> {
-                holder.itemView.setOnClickListener {
-                    if (MainActivity.isSearching)
-                        sendIntent(position = position, parameter = "MusicAdapterSearch")
-                    else
-                        sendIntent(position = position, parameter = "MusicAdapter")
-                }
-
-            }
-        }
     }
-
 
     override fun getItemCount(): Int {
         return musicList.size
-    }
-
-    private fun sendIntent(position: Int, parameter: String) {
-        val intent = Intent(context, MusicInterface::class.java)
-        intent.putExtra("index", position)
-        intent.putExtra("class", parameter)
-        ContextCompat.startActivity(context, intent, null)
     }
 
     fun updateMusicList(searchList: ArrayList<MusicClass>) {
@@ -129,26 +74,5 @@ class MusicAdapter(
         notifyDataSetChanged()
     }
 
-    private fun addSong(song: MusicClass): Boolean {
-        PlaylistActivity.musicPlaylist.ref[PlaylistActivityDetails.currentPlaylistPos].playlist.forEachIndexed { index, music ->
-            if (song.id == music.id) {
-                PlaylistActivity.musicPlaylist.ref[PlaylistActivityDetails.currentPlaylistPos].playlist.removeAt(
-                    index
-                )
-                return false
-            }
-        }
-        PlaylistActivity.musicPlaylist.ref[PlaylistActivityDetails.currentPlaylistPos].playlist.add(
-            song
-        )
-        return true
-    }
-
-    fun refreshPlaylist() {
-        musicList = ArrayList()
-        musicList =
-            PlaylistActivity.musicPlaylist.ref[PlaylistActivityDetails.currentPlaylistPos].playlist
-        notifyDataSetChanged()
-    }
 
 }

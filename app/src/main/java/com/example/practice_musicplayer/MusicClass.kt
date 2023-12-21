@@ -1,8 +1,6 @@
 package com.example.practice_musicplayer
 
 import android.media.MediaMetadataRetriever
-import com.example.practice_musicplayer.activities.FavouriteActivity
-import com.example.practice_musicplayer.activities.MusicInterface
 import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
@@ -39,16 +37,7 @@ fun getImageArt(path: String): ByteArray? {
     return retriever.embeddedPicture
 }
 
-fun favouriteCheck(id: String): Int {
-    MusicInterface.isLiked = false
-    FavouriteActivity.favSongList.forEachIndexed { index, music ->
-        if (id == music.id) {
-            MusicInterface.isLiked = true
-            return index
-        }
-    }
-    return -1
-}
+
 
 fun checkPlaylist(playlist: ArrayList<MusicClass>): ArrayList<MusicClass> {
     playlist.forEachIndexed { index, music ->
