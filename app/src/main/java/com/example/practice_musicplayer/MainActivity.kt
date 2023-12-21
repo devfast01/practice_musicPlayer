@@ -67,8 +67,9 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
-
+        binding.sort.setOnClickListener {
+            getNewSongs()
+        }
 
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -140,7 +141,7 @@ class MainActivity : AppCompatActivity() {
             val dataObject = dataArray.getJSONObject(i)
 
             val musicItem = MusicClass(
-                id = dataObject.getString("id"),
+                id = dataObject.getInt("id"),
                 date = dataObject.getString("date"),
                 name = dataObject.getString("name"),
                 duration = dataObject.getString("duration"),
@@ -151,7 +152,7 @@ class MainActivity : AppCompatActivity() {
 
             modelRecyclerArrayList.add(musicItem)
         }
-        Log.d("RESPONSE", modelRecyclerArrayList.toString())
+//        Log.d("RESPONSE", modelRecyclerArrayList.toString())
 
         songList = modelRecyclerArrayList
         newSongRecycleData(songList)

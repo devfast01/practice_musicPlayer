@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
 data class MusicClass(
-    val id: String,
+    val id: Int,
     val date: String,
     var name: String,
     val duration: String,
