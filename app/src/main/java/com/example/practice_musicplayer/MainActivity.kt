@@ -25,6 +25,8 @@ import com.example.practice_musicplayer.utils.RetrofitService
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -128,11 +130,38 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun init() {
+    private fun recycleNewSongs(response: String) = try {
+        val modelRecyclerArrayList: ArrayList<MusicClass> = ArrayList()
+        val obj = JSONObject(response)
+        val dataArray = obj.getJSONArray("data")
+//        Log.d("RESPONSE", dataArray.toString())
 
+        for (i in 0 until dataArray.length()) {
+            val dataObject = dataArray.getJSONObject(i)
+
+            val musicItem = MusicClass(
+                id = dataObject.getString("id"),
+                date = dataObject.getString("date"),
+                name = dataObject.getString("name"),
+                duration = dataObject.getString("duration"),
+                artist = dataObject.getString("artist"),
+                coverArtUrl = dataObject.getString("cover_art_url"),
+                url = dataObject.getString("url")
+            )
+
+            modelRecyclerArrayList.add(musicItem)
+        }
+        Log.d("RESPONSE", modelRecyclerArrayList.toString())
+
+        songList = modelRecyclerArrayList
+        newSongRecycleData(songList)
+    } catch (e: JSONException) {
+        e.printStackTrace()
+    }
+
+    private fun newSongRecycleData(array:ArrayList<MusicClass>) {
         recyclerView = binding.listView
-
-        musicAdapter = MusicAdapter(this, songList)
+        musicAdapter = MusicAdapter(this, array)
         recyclerView.adapter = musicAdapter
         recyclerView.setItemViewCacheSize(50)
         recyclerView.hasFixedSize()
