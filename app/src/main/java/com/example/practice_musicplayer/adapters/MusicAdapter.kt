@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.practice_musicplayer.MainActivity
 import com.example.practice_musicplayer.MusicClass
 import com.example.practice_musicplayer.R
+import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.databinding.SingleLayoutBinding
 import com.example.practice_musicplayer.formatDuration
 import com.google.android.material.snackbar.Snackbar
@@ -21,7 +23,7 @@ class MusicAdapter(
     private val context: Context,
     private var musicList: ArrayList<MusicClass>,
     private val playlistDetails: Boolean = false,
-    private val selectionActivity: Boolean = false
+    private val selectionActivity: Boolean = false,
 ) :
     RecyclerView.Adapter<MusicAdapter.MyHolder>() {
 
@@ -59,10 +61,22 @@ class MusicAdapter(
             .error(R.drawable.image_as_cover)
             .into(holder.imageView)
 
+        holder.itemView.setOnClickListener {
+            sendIntent(position = position, parameter = "MusicAdapter")
+            Toast.makeText(context, "++++++++++++", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun getItemCount(): Int {
         return musicList.size
+    }
+
+    private fun sendIntent(position: Int, parameter: String) {
+        val intent = Intent(context, MusicInterface::class.java)
+        intent.putExtra("index", position)
+        intent.putExtra("class", parameter)
+        ContextCompat.startActivity(context, intent, null)
     }
 
 
