@@ -1,5 +1,6 @@
 package com.example.practice_musicplayer.activities
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -27,13 +28,24 @@ import retrofit2.Response
 
 class MusicInterface : AppCompatActivity() {
 
-    private lateinit var binding:ActivityMusicInterfaceBinding
     private val apiService = RetrofitService.getInstance()
     private lateinit var musicAdapter: MusicAdapter
     companion object {
+        @SuppressLint("StaticFieldLeak")
+        lateinit var binding: ActivityMusicInterfaceBinding
         lateinit var songList: ArrayList<MusicClass>
         lateinit var musicList: ArrayList<MusicClass>
+        var musicService: MusicService? = null
+        var fIndex: Int = -1
+        var isLiked: Boolean = false
+        var counter: Int = 0
+            set(value) {
+                field = kotlin.math.max(value, 0)
+            }
         var songPosition: Int = 0
+        var isPlaying: Boolean = false
+        var isRepeating: Boolean = false
+        var isShuffling: Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
