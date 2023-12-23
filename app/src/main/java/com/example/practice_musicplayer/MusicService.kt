@@ -23,6 +23,7 @@ import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.fragments.NowPlaying
 import com.example.practice_musicplayer.utils.ApplicationClass
 
+@Suppress("DEPRECATION")
 class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
     private var myBinder = MyBinder()
     var mediaPlayer: MediaPlayer? = null
@@ -74,22 +75,8 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             Intent(baseContext, MyBroadcastReceiver::class.java).setAction(ApplicationClass.PLAY)
         playPendingIntent = PendingIntent.getBroadcast(
             baseContext, 3, playIntent, flag
-
         )
 
-        val nextIntent =
-            Intent(baseContext, MyBroadcastReceiver::class.java).setAction(ApplicationClass.NEXT)
-        val nextPendingIntent = PendingIntent.getBroadcast(
-            baseContext, 3, nextIntent, flag
-
-        )
-
-        val exitIntent =
-            Intent(baseContext, MyBroadcastReceiver::class.java).setAction(ApplicationClass.EXIT)
-        val exitPendingIntent = PendingIntent.getBroadcast(
-            baseContext, 3, exitIntent, flag
-
-        )
 
         val imageArt =
             getImageArt(MusicInterface.musicList[MusicInterface.songPosition].coverArtUrl)
@@ -115,8 +102,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setOnlyAlertOnce(true)
             .addAction(R.drawable.navigate_before_notification, "Previous", prevPendingIntent)
             .addAction(playPauseButton, "PlayPause", playPendingIntent)
-            .addAction(R.drawable.navigate_next_notification, "Next", nextPendingIntent)
-            .addAction(R.drawable.close_notification, "Exit", exitPendingIntent).build()
+            .build()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val playbackSpeed = if (MusicInterface.isPlaying) 1F else 0F
@@ -143,7 +129,6 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
                 .build()
 
             mediaSession.setPlaybackState(playBackState)
-            mediaSession.isActive = true
             mediaSession.isActive = true
             mediaSession.setCallback(object : MediaSessionCompat.Callback() {
                 override fun onMediaButtonEvent(mediaButtonEvent: Intent): Boolean {
@@ -259,5 +244,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             showNotification(R.drawable.pause_notification)
         }
     }
+
+
 
 }

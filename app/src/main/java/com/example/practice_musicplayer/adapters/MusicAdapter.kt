@@ -63,7 +63,6 @@ class MusicAdapter(
 
         holder.itemView.setOnClickListener {
             sendIntent(position = position, parameter = "MusicAdapter")
-            Toast.makeText(context, "++++++++++++", Toast.LENGTH_SHORT).show()
         }
 
     }
