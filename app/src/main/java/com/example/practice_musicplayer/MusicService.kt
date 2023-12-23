@@ -49,7 +49,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
 
 
     @SuppressLint("UnspecifiedImmutableFlag")
-    fun showNotification(playPauseButton: Int) {
+    fun showNotification(   playPauseButton: Int) {
         val intent = Intent(baseContext, MusicInterface::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         intent.putExtra("index", MusicInterface.songPosition)

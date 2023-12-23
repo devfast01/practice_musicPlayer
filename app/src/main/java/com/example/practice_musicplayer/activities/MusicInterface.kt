@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.practice_musicplayer.MainActivity
 import com.example.practice_musicplayer.MusicClass
 import com.example.practice_musicplayer.MusicService
+import com.example.practice_musicplayer.MyService
 import com.example.practice_musicplayer.R
 import com.example.practice_musicplayer.adapters.MusicAdapter
 import com.example.practice_musicplayer.databinding.ActivityMusicInterfaceBinding
@@ -55,6 +56,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         var isPlaying: Boolean = false
         var isRepeating: Boolean = false
         var isShuffling: Boolean = false
+        var musicUrl = "https://aydym.com/audioFiles/original/2023/10/24/17/42/944dc23f-c4cf-4267-8122-34b3eb2bada8.mp3"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,22 +65,24 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         setContentView(binding.root)
         binding.interfaceSongName.isSelected = true
 
-        initActivity()
-
         binding.backButton.setOnClickListener {
             finish()
         }
 
         binding.interfacePlay.setOnClickListener {
             if (isPlaying) {
-                pauseMusic()
-                Toast.makeText(this, "pause", Toast.LENGTH_SHORT).show()
+                stopService(Intent(this,MyService::class.java))
+                binding.interfacePlay.setImageResource(R.drawable.play)
+                isPlaying = false
             }
-
             else {
-                playMusic()
+                startService(Intent(this,MyService::class.java))
+                binding.interfacePlay.setImageResource(R.drawable.pause)
+                isPlaying = true
             }
+            Log.e("isPlay", isPlaying.toString())
         }
+
     }
 
 
@@ -230,13 +234,10 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             return
         }
     }
-
     override fun onResume() {
         super.onResume()
         overridePendingTransition(com.google.android.material.R.anim.mtrl_bottom_sheet_slide_in, 0)
 
     }
-
-
 
 }
