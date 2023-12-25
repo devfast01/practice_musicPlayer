@@ -73,18 +73,41 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
         binding.interfacePlay.setOnClickListener {
             if (isPlaying) {
-                stopService(Intent(this,MyService::class.java))
+                stopService(Intent(this,MusicService::class.java))
                 binding.interfacePlay.setImageResource(R.drawable.play)
                 isPlaying = false
             }
             else {
-                startService(Intent(this,MyService::class.java))
+                startService(Intent(this,MusicService::class.java))
                 binding.interfacePlay.setImageResource(R.drawable.pause)
                 isPlaying = true
             }
-            Log.e("isPlay", isPlaying.toString())
+//            Log.e("isPlay", isPlaying.toString())
+
         }
     }
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        if (musicService == null) {
+            val binder = service as MusicService.MyBinder
+            musicService = binder.currentService()
+            musicService!!.audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            musicService!!.audioManager.requestAudioFocus(
+                musicService, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN
+            )
+            Log.e("isPlay", musicService.toString())
+        }
+        Log.e("isPlay", musicService.toString())
+        initSong()
+        musicService!!.seekBarHandler()
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+        musicService = null
+    }
+
+
+
 
     private fun initActivity() {
         when (intent.getStringExtra("class")) {
@@ -181,23 +204,6 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         }
     }
 
-    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        if (musicService == null) {
-            val binder = service as MusicService.MyBinder
-            musicService = binder.currentService()
-            musicService!!.audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-            musicService!!.audioManager.requestAudioFocus(
-                musicService, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN
-            )
-        }
-        initSong()
-        musicService!!.seekBarHandler()
-    }
-
-    override fun onServiceDisconnected(name: ComponentName?) {
-        musicService = null
-        myService = null
-    }
 
     override fun onCompletion(mp: MediaPlayer?) {
         setSongPosition(increment = true)

@@ -53,7 +53,10 @@ fun exitApplicationNotification() {
 //        val musicInterface = MusicInterface()
 //        musicInterface.pauseMusic()
 //    }
-    MusicInterface.myService!!.stopForeground(true)
+    Log.e("serStop", MusicInterface.musicService.toString())
+    MusicInterface.musicService!!.stopForeground(true)
+//    MusicInterface.myService!!.stopForeground(true)
+
 }
 fun formatDuration(duration: Long): String {
     val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)

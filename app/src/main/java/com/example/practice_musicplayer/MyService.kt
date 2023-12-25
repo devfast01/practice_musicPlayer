@@ -58,7 +58,7 @@ class MyService : Service() {
         val pendingIntent =
             PendingIntent.getActivity(this, 3, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             PendingIntent.FLAG_IMMUTABLE
         } else {
             PendingIntent.FLAG_UPDATE_CURRENT
@@ -70,20 +70,17 @@ class MyService : Service() {
             baseContext, 3, exitIntent, flag
         )
 
-
         val notification = Notification
             .Builder(this, channelid)
             .setContentText("Music Player")
             .setSmallIcon(R.drawable.play)
             .setContentIntent(pendingIntent)
-            .addAction(R.drawable.close_notification, "Previous", exitPendingIntent)
             .build()
 
         ServiceCompat.startForeground(
             this, 3, notification,
             ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
         )
-
     }
 
     private fun createNotificationChanel() {
