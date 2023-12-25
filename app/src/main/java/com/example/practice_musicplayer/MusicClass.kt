@@ -1,8 +1,13 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.practice_musicplayer
 
 import android.content.ContentValues
+import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.media.MediaMetadataRetriever
 import android.util.Log
+import androidx.core.app.ServiceCompat
 import com.example.practice_musicplayer.activities.MusicInterface
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -43,7 +48,13 @@ fun getImageArt(path: String): ByteArray? {
 }
 
 
-
+fun exitApplicationNotification() {
+//    if (MusicInterface.isPlaying) {
+//        val musicInterface = MusicInterface()
+//        musicInterface.pauseMusic()
+//    }
+    MusicInterface.myService!!.stopForeground(true)
+}
 fun formatDuration(duration: Long): String {
     val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
     val seconds = (TimeUnit.SECONDS.convert(

@@ -16,25 +16,33 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import com.example.practice_musicplayer.activities.MusicInterface
+import com.example.practice_musicplayer.utils.ApplicationClass
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 
 @Suppress("DEPRECATION")
 class MyService : Service() {
-    private lateinit var mediaPlayer: MediaPlayer
+    private var mediaPlayer: MediaPlayer? = null
     private var audioUrl: String? = null
-    private val channelid = "12"
+    private val channelid = "3"
 
-
-    @RequiresApi(Build.VERSION_CODES.Q)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
         mediaPlayer = MediaPlayer()
         createNotificationChanel()
     }
 
-    fun playAudio() {
-        mediaPlayer.apply {
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        playAudio()
+        showNotification()
+
+        return START_STICKY
+    }
+
+    private fun playAudio() {
+        mediaPlayer!!.apply {
             reset()
             setDataSource("https://aydym.com/audioFiles/original/2023/10/24/17/42/944dc23f-c4cf-4267-8122-34b3eb2bada8.mp3")
             prepareAsync()
@@ -43,49 +51,55 @@ class MyService : Service() {
     }
 
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        playAudio()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            showNotification()
-        }
-        return START_STICKY
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UnspecifiedImmutableFlag", "InlinedApi")
     private fun showNotification() {
-        val notificationIntent = Intent(this, MusicInterface::class.java)
+        val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent =
             PendingIntent.getActivity(this, 3, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_IMMUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+
+        val exitIntent =
+            Intent(baseContext, MyBroadcastReceiver::class.java).setAction(ApplicationClass.EXIT)
+        val exitPendingIntent = PendingIntent.getBroadcast(
+            baseContext, 3, exitIntent, flag
+        )
+
 
         val notification = Notification
             .Builder(this, channelid)
             .setContentText("Music Player")
             .setSmallIcon(R.drawable.play)
             .setContentIntent(pendingIntent)
+            .addAction(R.drawable.close_notification, "Previous", exitPendingIntent)
             .build()
 
-        ServiceCompat.startForeground(this, 5, notification,
+        ServiceCompat.startForeground(
+            this, 3, notification,
             ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
         )
 
     }
 
     private fun createNotificationChanel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
-                channelid, "My Service Channel",
+                channelid, "Foreground Service Channel",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             val manager = getSystemService(NotificationManager::class.java)
-
-            manager.createNotificationChannel(serviceChannel)
+            manager!!.createNotificationChannel(serviceChannel)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.stop()
+        mediaPlayer!!.stop()
     }
 
     override fun onBind(intent: Intent?): IBinder? {

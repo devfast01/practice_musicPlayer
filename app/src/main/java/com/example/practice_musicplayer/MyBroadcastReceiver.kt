@@ -15,9 +15,9 @@ import com.example.practice_musicplayer.utils.ApplicationClass
 class MyBroadcastReceiver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
         when (intent?.action) {
-//            ApplicationClass.PREVIOUS -> {
-//                prevNextMusic(increment = false, context = context!!)
-//            }
+            ApplicationClass.EXIT -> {
+                exitApplicationNotification()
+            }
         }
     }
 

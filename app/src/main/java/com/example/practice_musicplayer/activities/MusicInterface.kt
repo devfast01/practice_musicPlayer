@@ -41,11 +41,13 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
 
     companion object {
+
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityMusicInterfaceBinding
         lateinit var songList: ArrayList<MusicClass>
         lateinit var musicList: ArrayList<MusicClass>
         var musicService: MusicService? = null
+        var myService: MyService? = null
         var fIndex: Int = -1
         var isLiked: Boolean = false
         var counter: Int = 0
@@ -82,9 +84,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             }
             Log.e("isPlay", isPlaying.toString())
         }
-
     }
-
 
     private fun initActivity() {
         when (intent.getStringExtra("class")) {
@@ -168,7 +168,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             return
         }
     }
-    private fun pauseMusic() {
+    fun pauseMusic() {
         try {
             musicService!!.audioManager.abandonAudioFocus(musicService)
             isPlaying = false
@@ -196,6 +196,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
     override fun onServiceDisconnected(name: ComponentName?) {
         musicService = null
+        myService = null
     }
 
     override fun onCompletion(mp: MediaPlayer?) {
