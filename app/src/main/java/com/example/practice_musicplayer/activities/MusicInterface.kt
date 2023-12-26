@@ -74,24 +74,23 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
         Log.e("aglama", "$response")
 
-//        if (intent.data?.scheme.contentEquals("content")) {
-//            val intentService = Intent(this, MusicService::class.java)
-//            bindService(intentService, this, BIND_AUTO_CREATE)
-//            startService(intentService)
-//            musicList = ArrayList()
-//
-//            musicList.add(songList[songPosition])
-//            Glide.with(this).load(getImageArt(songList[songPosition].coverArtUrl)).apply(
-//                RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
-//            ).into(binding.interfaceCover)
-//            Log.e("IF " ,musicList[songPosition].url)
-//            binding.interfaceSongName.text =
-//                musicList[songPosition].name.removePrefix("/storage/emulated/0/")
-//            binding.interfaceArtistName.text = musicList[songPosition].name
-//        } else {
-//            Log.e("ELSE " ,intent.getIntExtra("index", 0).toString())
-//            initActivity()
-//        }
+        if (intent.data?.scheme.contentEquals("content")) {
+            val intentService = Intent(this, MusicService::class.java)
+            bindService(intentService, this, BIND_AUTO_CREATE)
+            startService(intentService)
+            musicList = ArrayList()
+            musicList.add(songList[songPosition])
+            Glide.with(this).load(getImageArt(musicList[songPosition].coverArtUrl)).apply(
+                RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
+            ).into(binding.interfaceCover)
+            Log.e("IF " ,musicList[songPosition].url)
+            binding.interfaceSongName.text =
+                musicList[songPosition].name
+            binding.interfaceArtistName.text = musicList[songPosition].artist
+        } else {
+            Log.e("ELSE " ,intent.getIntExtra("index", 0).toString())
+            initActivity()
+        }
 
     }
 
