@@ -8,29 +8,38 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.media.AudioManager
 import android.media.MediaPlayer
+import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.provider.Settings
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import com.example.practice_musicplayer.activities.MusicInterface
+import com.example.practice_musicplayer.fragments.NowPlaying
 import com.example.practice_musicplayer.utils.ApplicationClass
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 
 @Suppress("DEPRECATION")
-class MyService : Service() {
-    private var mediaPlayer: MediaPlayer? = null
+class MyService : Service(), AudioManager.OnAudioFocusChangeListener {
+    var mediaPlayer: MediaPlayer? = null
     private var audioUrl: String? = null
+    private var myBinder = MyBinder()
     private val channelid = "3"
+    lateinit var audioManager: AudioManager
+    private lateinit var mediaSession: MediaSessionCompat
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
         mediaPlayer = MediaPlayer()
         createNotificationChanel()
+    }
+
+    override fun onBind(intent: Intent?): IBinder {
+        mediaSession = MediaSessionCompat(baseContext, "Music")
+        return myBinder
     }
 
 
@@ -42,18 +51,19 @@ class MyService : Service() {
     }
 
     private fun playAudio() {
-        mediaPlayer!!.apply {
+        mediaPlayer?.apply {
             reset()
             setDataSource("https://aydym.com/audioFiles/original/2023/10/24/17/42/944dc23f-c4cf-4267-8122-34b3eb2bada8.mp3")
             prepareAsync()
             setOnPreparedListener { start() }
         }
+        initSong()
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UnspecifiedImmutableFlag", "InlinedApi")
-    private fun showNotification() {
+    fun showNotification() {
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent =
             PendingIntent.getActivity(this, 3, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
@@ -83,6 +93,12 @@ class MyService : Service() {
         )
     }
 
+    inner class MyBinder : Binder() {
+        fun currentService(): MyService {
+            return this@MyService
+        }
+    }
+
     private fun createNotificationChanel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
@@ -94,12 +110,43 @@ class MyService : Service() {
         }
     }
 
+    fun initSong() {
+        try {
+            if (mediaPlayer == null) mediaPlayer = MediaPlayer()
+            MusicInterface.myService?.let {
+                it.mediaPlayer!!.reset()
+                it.mediaPlayer!!.setDataSource(MusicInterface.musicList[MusicInterface.songPosition].url)
+                it.mediaPlayer!!.prepare()
+                it.showNotification()
+                MusicInterface.binding.interfacePlay.setImageResource((R.drawable.pause))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace() // Log the exception for debugging
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer!!.stop()
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
+
+    override fun onAudioFocusChange(focusChange: Int) {
+        if (focusChange <= 0) {
+            //pause music
+            MusicInterface.binding.interfacePlay.setImageResource(R.drawable.play)
+            MusicInterface.isPlaying = false
+            NowPlaying.binding.fragmentButton.setImageResource(R.drawable.play_now)
+            mediaPlayer!!.pause()
+            showNotification()
+
+        } else {
+            //play music
+            MusicInterface.binding.interfacePlay.setImageResource(R.drawable.pause)
+            MusicInterface.isPlaying = true
+            mediaPlayer!!.start()
+            NowPlaying.binding.fragmentButton.setImageResource(R.drawable.pause_now)
+            showNotification()
+        }
     }
 }
