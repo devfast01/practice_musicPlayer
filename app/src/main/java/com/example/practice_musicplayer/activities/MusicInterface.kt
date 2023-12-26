@@ -62,9 +62,22 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         }
 
         binding.interfacePlay.setOnClickListener {
-            if (isPlaying) pauseMusic()
-            else playMusic()
+            if (musicService!!.mediaPlayer == null) musicService!!.mediaPlayer = MediaPlayer()
+            musicService!!.mediaPlayer!!.reset()
+            musicService!!.mediaPlayer!!.setDataSource("https://aydym.com/audioFiles/original/2023/10/24/17/42/944dc23f-c4cf-4267-8122-34b3eb2bada8.mp3")
+            musicService!!.mediaPlayer!!.prepare()
+
+            if (isPlaying) {
+                Log.e("isPlay", isPlaying.toString())
+            }
+            else {
+                Log.e("isPlay", isPlaying.toString())
+            }
         }
+//        binding.interfacePlay.setOnClickListener {
+//            if (isPlaying) pauseMusic()
+//            else playMusic()
+//        }
     }
     private fun initSong() {
         try {
@@ -90,9 +103,9 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             myService!!.audioManager.requestAudioFocus(
                 myService, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN
             )
-            Log.e("isPlay", myService.toString())
+//            Log.e("isPlay", myService.toString())
         }
-        Log.e("isPlay", myService.toString())
+//        Log.e("isPlay", myService.toString())
         initSong()
         musicService!!.seekBarHandler()
     }

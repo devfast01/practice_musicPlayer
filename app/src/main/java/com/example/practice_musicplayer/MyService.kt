@@ -53,7 +53,7 @@ class MyService : Service(), AudioManager.OnAudioFocusChangeListener {
     private fun playAudio() {
         mediaPlayer?.apply {
             reset()
-            setDataSource("https://aydym.com/audioFiles/original/2023/10/24/17/42/944dc23f-c4cf-4267-8122-34b3eb2bada8.mp3")
+            setDataSource(MusicInterface.musicUrl)
             prepareAsync()
             setOnPreparedListener { start() }
         }

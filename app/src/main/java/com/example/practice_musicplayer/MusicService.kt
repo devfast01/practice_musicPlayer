@@ -49,13 +49,14 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
 
 
     @SuppressLint("UnspecifiedImmutableFlag")
-    fun showNotification(   playPauseButton: Int) {
+    fun showNotification(playPauseButton: Int) {
+
         val intent = Intent(baseContext, MusicInterface::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         intent.putExtra("index", MusicInterface.songPosition)
         intent.putExtra("class", "Now Playing Notification")
 
-        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             PendingIntent.FLAG_IMMUTABLE
         } else {
             PendingIntent.FLAG_UPDATE_CURRENT
@@ -131,6 +132,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             mediaSession.setPlaybackState(playBackState)
             mediaSession.isActive = true
             mediaSession.setCallback(object : MediaSessionCompat.Callback() {
+
                 override fun onMediaButtonEvent(mediaButtonEvent: Intent): Boolean {
                     val event =
                         mediaButtonEvent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
@@ -203,13 +205,6 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             MusicInterface.musicService!!.mediaPlayer!!.prepare()
             MusicInterface.musicService!!.showNotification(R.drawable.pause_notification)
             MusicInterface.binding.interfacePlay.setImageResource((R.drawable.pause))
-            MusicInterface.binding.interfaceSeekStart.text =
-                formatDuration(mediaPlayer!!.currentPosition.toLong())
-            MusicInterface.binding.interfaceSeekEnd.text =
-                formatDuration(mediaPlayer!!.duration.toLong())
-            MusicInterface.binding.seekbar.progress = 0
-            MusicInterface.binding.seekbar.max =
-                mediaPlayer!!.duration
 
         } catch (e: Exception) {
             return
@@ -244,7 +239,6 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             showNotification(R.drawable.pause_notification)
         }
     }
-
 
 
 }
