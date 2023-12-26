@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
                     if (response.body() != null) {
                         val jsonresponse: String = response.body().toString()
                         // on below line we are initializing our adapter.
-                        Log.d("response", jsonresponse.toString())
+//                        Log.d("response", jsonresponse.toString())
                         recycleNewSongs(jsonresponse)
                     } else {
                         Log.i(
@@ -153,6 +153,7 @@ class MainActivity : AppCompatActivity() {
 
             modelRecyclerArrayList.add(musicItem)
         }
+
 //        Log.d("RESPONSE", modelRecyclerArrayList.toString())
 
         songList = modelRecyclerArrayList

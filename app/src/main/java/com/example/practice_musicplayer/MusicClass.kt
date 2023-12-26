@@ -5,12 +5,15 @@ package com.example.practice_musicplayer
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.media.MediaMetadataRetriever
 import android.util.Log
 import androidx.core.app.ServiceCompat
 import com.example.practice_musicplayer.activities.MusicInterface
 import java.io.File
 import java.util.concurrent.TimeUnit
+import kotlin.math.roundToInt
 import kotlin.random.Random
 import kotlin.system.exitProcess
 
@@ -47,6 +50,24 @@ fun getImageArt(path: String): ByteArray? {
     return retriever.embeddedPicture
 }
 
+fun getMainColor(img: Bitmap): Int {
+    val newImg = Bitmap.createScaledBitmap(img, 1, 1, true)
+    val color = newImg.getPixel(0, 0)
+    newImg.recycle()
+    return manipulateColor(color, 0.4.toFloat())
+}
+fun manipulateColor(color: Int, factor: Float): Int {
+    val a: Int = Color.alpha(color)
+    val r = (Color.red(color) * factor).roundToInt()
+    val g = (Color.green(color) * factor).roundToInt()
+    val b = (Color.blue(color) * factor).roundToInt()
+    return Color.argb(
+        a,
+        r.coerceAtMost(255),
+        g.coerceAtMost(255),
+        b.coerceAtMost(255)
+    )
+}
 
 fun exitApplicationNotification() {
 //    if (MusicInterface.isPlaying) {
