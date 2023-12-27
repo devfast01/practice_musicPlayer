@@ -31,8 +31,9 @@ class MusicAdapter(
         val titleView = binding.titleView
         val albumName = binding.albumName
         val imageView = binding.imageView
+        val duration = binding.duration
+        val root = binding.root
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
         return MyHolder(
@@ -61,17 +62,32 @@ class MusicAdapter(
             .error(R.drawable.image_as_cover)
             .into(holder.imageView)
 
+        when {
+            playlistDetails -> {
+                holder.root.setOnClickListener {
+                    Toast.makeText(context, "play list details", Toast.LENGTH_SHORT).show()
+                    sendIntent(position = position, parameter = "PlaylistDetailsAdapter")
+                }
+            }
 
+            else -> {
+                holder.itemView.setOnClickListener {
+                    if (MainActivity.isSearching) {
+                        sendIntent(position = position, parameter = "MusicAdapterSearch")
+                    } else {
+                        sendIntent(position = position, parameter = "MusicAdapter")
+                    }
+                }
 
-        holder.itemView.setOnClickListener {
-            sendIntent(position = position, parameter = "MusicAdapter")
+            }
         }
-
     }
 
     override fun getItemCount(): Int {
         return musicList.size
     }
+
+
 
     private fun sendIntent(position: Int, parameter: String) {
         val intent = Intent(context, MusicInterface::class.java)

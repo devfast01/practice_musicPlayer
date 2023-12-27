@@ -2,6 +2,7 @@ package com.example.practice_musicplayer.activities
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
@@ -9,11 +10,13 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.GradientDrawable
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.audiofx.AudioEffect
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -30,6 +33,8 @@ import com.example.practice_musicplayer.fragments.NowPlaying
 import com.example.practice_musicplayer.getImageArt
 import com.example.practice_musicplayer.getMainColor
 import com.example.practice_musicplayer.setSongPosition
+import com.example.practice_musicplayer.utils.OnSwipeTouchListener
+import com.google.android.material.snackbar.Snackbar
 
 
 @Suppress("DEPRECATION")
@@ -60,6 +65,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             "https://aydym.com/audioFiles/original/2023/10/24/17/42/944dc23f-c4cf-4267-8122-34b3eb2bada8.mp3"
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMusicInterfaceBinding.inflate(layoutInflater)
@@ -97,8 +103,89 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         binding.interfacePlay.setOnClickListener {
             if (isPlaying) pauseMusic()
             else playMusic()
-
         }
+
+        binding.interfaceNext.setOnClickListener {
+            prevNextSong(increment = true)
+        }
+        binding.interfacePrevious.setOnClickListener {
+            prevNextSong(increment = false)
+        }
+
+        binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, isUser: Boolean) {
+                try {
+
+                    if (isUser) {
+                        musicService!!.mediaPlayer!!.seekTo(progress)
+                        musicService!!.showNotification(if (isPlaying) R.drawable.pause_notification else R.drawable.play_notification)
+                    }
+                } catch (e: Exception) {
+                    return
+                }
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) = Unit
+
+            override fun onStopTrackingTouch(p0: SeekBar?) = Unit
+        })
+
+        binding.interfaceEqualizer.setOnClickListener {
+            try {
+                val eqIntent = Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL)
+                eqIntent.putExtra(
+                    AudioEffect.EXTRA_AUDIO_SESSION, musicService!!.mediaPlayer!!.audioSessionId
+                )
+                eqIntent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, baseContext.packageName)
+                eqIntent.putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
+                startActivityForResult(eqIntent, 3)
+            } catch (e: Exception) {
+                Snackbar.make(
+                    this, it, "Equalizer feature not supported in your device.", 3000
+                ).show()
+            }
+        }
+
+        binding.interfaceCover.setOnTouchListener(object : OnSwipeTouchListener(baseContext) {
+            override fun onSingleClick() {
+                if (isPlaying) {
+                    pauseMusic()
+                } else {
+                    playMusic()
+                }
+            }
+
+            override fun onSwipeDown() {
+                Log.d(ContentValues.TAG, "onSwipeDown: Performed")
+                finish()
+            }
+
+            override fun onSwipeLeft() {
+                prevNextSong(increment = true)
+            }
+
+            override fun onSwipeRight() {
+                prevNextSong(increment = false)
+            }
+        })
+
+        binding.root.setOnTouchListener(object : OnSwipeTouchListener(baseContext) {
+
+            override fun onSwipeDown() {
+                Log.d(ContentValues.TAG, "onSwipeDown: Performed")
+                finish()
+            }
+
+            override fun onSwipeLeft() {
+                prevNextSong(increment = true)
+            }
+
+            override fun onSwipeRight() {
+                prevNextSong(increment = false)
+            }
+        })
+
+
     }
 
     private fun initActivity() {

@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         lateinit var songList: ArrayList<MusicClass>
         lateinit var recyclerView: RecyclerView
         lateinit var musicListSearch: ArrayList<MusicClass>
+        var isSearching: Boolean = false
 
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityMainBinding
@@ -71,6 +72,8 @@ class MainActivity : AppCompatActivity() {
         binding.sort.setOnClickListener {
             getNewSongs()
         }
+
+
 
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -177,6 +180,17 @@ class MainActivity : AppCompatActivity() {
             return true
         return super.onOptionsItemSelected(item)
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(myBroadcastReceiver)
+        exitApplication()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (MusicInterface.musicService != null) binding.nowPlaying.visibility = View.VISIBLE
     }
 }
 
