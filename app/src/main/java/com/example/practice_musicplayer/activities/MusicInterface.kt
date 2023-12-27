@@ -24,10 +24,12 @@ import com.example.practice_musicplayer.MusicService
 import com.example.practice_musicplayer.MyService
 import com.example.practice_musicplayer.R
 import com.example.practice_musicplayer.databinding.ActivityMusicInterfaceBinding
+import com.example.practice_musicplayer.exitApplication
 import com.example.practice_musicplayer.formatDuration
 import com.example.practice_musicplayer.fragments.NowPlaying
 import com.example.practice_musicplayer.getImageArt
 import com.example.practice_musicplayer.getMainColor
+import com.example.practice_musicplayer.setSongPosition
 
 
 @Suppress("DEPRECATION")
@@ -37,8 +39,8 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityMusicInterfaceBinding
-        lateinit var songList: ArrayList<MusicClass>
-        lateinit var musicList: ArrayList<MusicClass>
+        var songList: ArrayList<MusicClass>? = null
+        var musicList: ArrayList<MusicClass>? = null
         var musicService: MusicService? = null
         var myService: MyService? = null
         var songPosition: Int = 0
@@ -67,42 +69,37 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         binding.backButton.setOnClickListener {
             finish()
         }
-        musicList = ArrayList()
-        val songList = MainActivity.songList
-        musicList.add(songList[songPosition])
-        val response = musicList[songPosition]
+//        musicList = ArrayList()
+//        val songList = MainActivity.songList
+//        musicList.add(songList[songPosition])
+//        val response = musicList[songPosition]
 
-        Log.e("aglama", "$response")
+        Log.e("aglama", intent.getStringExtra("class").toString())
 
         if (intent.data?.scheme.contentEquals("content")) {
             val intentService = Intent(this, MusicService::class.java)
             bindService(intentService, this, BIND_AUTO_CREATE)
             startService(intentService)
             musicList = ArrayList()
-            musicList.add(songList[songPosition])
-            Glide.with(this).load(getImageArt(musicList[songPosition].coverArtUrl)).apply(
+            musicList!!.add(songList!![songPosition])
+            Glide.with(this).load(getImageArt(musicList!![songPosition].coverArtUrl)).apply(
                 RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
             ).into(binding.interfaceCover)
-            Log.e("IF " ,musicList[songPosition].url)
+            Log.e("IF ", musicList!![songPosition].url)
             binding.interfaceSongName.text =
-                musicList[songPosition].name
-            binding.interfaceArtistName.text = musicList[songPosition].artist
+                musicList!![songPosition].name
+            binding.interfaceArtistName.text = musicList!![songPosition].artist
         } else {
-            Log.e("ELSE " ,intent.getIntExtra("index", 0).toString())
+            Log.e("ELSE ", intent.getIntExtra("index", 0).toString())
             initActivity()
         }
 
+        binding.interfacePlay.setOnClickListener {
+            if (isPlaying) pauseMusic()
+            else playMusic()
+
+        }
     }
-
-//    private fun getMusicDetails(contentUri: Uri): MusicClass {
-//       MainActivity.songList.
-//        try {
-//
-//        }finally {
-//
-//        }
-//    }
-
 
     private fun initActivity() {
         songPosition = intent.getIntExtra("index", 0)
@@ -119,40 +116,17 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 showMusicInterfacePlaying()
             }
 
-            "MusicAdapterSearch" -> {
-                initServiceAndPlaylist(MainActivity.musicListSearch, shuffle = false)
-            }
-        }
-    }
-
-    private fun showMusicInterfacePlaying() {
-        setLayout()
-        binding.interfaceSeekStart.text =
-            formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())
-        binding.interfaceSeekEnd.text =
-            formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
-        binding.seekbar.progress = musicService!!.mediaPlayer!!.currentPosition
-        binding.seekbar.max = musicService!!.mediaPlayer!!.duration
-        if (isPlaying) {
-            binding.interfacePlay.setImageResource((R.drawable.pause))
-        } else {
-            binding.interfacePlay.setImageResource((R.drawable.play))
-        }
-        if (isLiked) {
-            NowPlaying.binding.fragmentHeartButton.setImageResource(R.drawable.heart_fill)
-        } else {
-            NowPlaying.binding.fragmentHeartButton.setImageResource(R.drawable.heart)
         }
     }
 
     private fun setLayout() {
         try {
-            Glide.with(this).load(getImageArt(musicList[songPosition].coverArtUrl)).apply(
+            Glide.with(this).load(getImageArt(musicList!![songPosition].coverArtUrl)).apply(
                 RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
             ).into(binding.interfaceCover)
 
-            binding.interfaceSongName.text = musicList[songPosition].name
-            binding.interfaceArtistName.text = musicList[songPosition].artist
+            binding.interfaceSongName.text = musicList!![songPosition].name
+            binding.interfaceArtistName.text = musicList!![songPosition].artist
             if (isRepeating) {
                 binding.interfaceRepeat.setImageResource(R.drawable.repeat_on)
                 binding.interfaceRepeat.setColorFilter(ContextCompat.getColor(this, R.color.green))
@@ -169,7 +143,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 binding.interfaceLikeButton.setImageResource(R.drawable.heart)
             }
 
-            val img = getImageArt(musicList[songPosition].coverArtUrl)
+            val img = getImageArt(musicList!![songPosition].coverArtUrl)
             val image = if (img != null) {
                 BitmapFactory.decodeByteArray(img, 0, img.size)
             } else {
@@ -188,30 +162,160 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         }
     }
 
-    private fun initServiceAndPlaylist(
+    private fun initSong() {
+        try {
+            if (musicService!!.mediaPlayer == null) musicService!!.mediaPlayer = MediaPlayer()
+            musicService!!.mediaPlayer!!.reset()
+            musicService!!.mediaPlayer!!.setDataSource(musicList!![songPosition].url)
+            musicService!!.mediaPlayer!!.prepare()
+            binding.interfacePlay.setImageResource((R.drawable.pause))
+            binding.interfaceSeekStart.text =
+                formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())
+            binding.interfaceSeekEnd.text =
+                formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
+            binding.seekbar.progress = 0
+            binding.seekbar.max = musicService!!.mediaPlayer!!.duration
+            musicService!!.mediaPlayer!!.setOnCompletionListener(this)
+            playMusic()
+
+        } catch (e: Exception) {
+            return
+        }
+    }
+
+    private fun playMusic() {
+        try {
+            musicService!!.audioManager.requestAudioFocus(
+                musicService, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN
+            )
+            isPlaying = true
+            musicService!!.mediaPlayer!!.start()
+            binding.interfacePlay.setImageResource((R.drawable.pause))
+            musicService!!.showNotification(R.drawable.pause_notification)
+            NowPlaying.binding.fragmentButton.setImageResource(R.drawable.pause_now)
+        } catch (e: Exception) {
+            return
+        }
+    }
+
+    fun pauseMusic() {
+        try {
+            musicService!!.audioManager.abandonAudioFocus(musicService)
+            isPlaying = false
+            musicService!!.mediaPlayer!!.pause()
+            binding.interfacePlay.setImageResource((R.drawable.play))
+            musicService!!.showNotification(R.drawable.play_notification)
+            NowPlaying.binding.fragmentButton.setImageResource(R.drawable.play_now)
+        } catch (e: Exception) {
+            return
+        }
+    }
+
+    private fun prevNextSong(increment: Boolean) {
+        if (increment) {
+            setSongPosition(increment = true)
+            setLayout()
+            initSong()
+            counter--
+        } else {
+            setSongPosition(increment = false)
+            setLayout()
+            initSong()
+        }
+    }
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        Toast.makeText(this, "connected", Toast.LENGTH_SHORT).show()
+        if (musicService == null) {
+            val binder = service as MusicService.MyBinder
+            musicService = binder.currentService()
+            musicService!!.audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            musicService!!.audioManager.requestAudioFocus(
+                musicService, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN
+            )
+        }
+        initSong()
+        musicService!!.seekBarHandler()
+    }
+
+    override fun onServiceDisconnected(p0: ComponentName?) {
+        musicService = null
+        Toast.makeText(this, "disconnected", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onCompletion(p0: MediaPlayer?) {
+        setSongPosition(increment = true)
+        setLayout()
+        initSong()
+        counter--
+
+        //for refreshing now playing image & text on song completion
+        NowPlaying.binding.fragmentTitle.isSelected = true
+        Glide.with(applicationContext).load(getImageArt(musicList!![songPosition].url))
+            .apply(RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop())
+            .into(NowPlaying.binding.fragmentImage)
+        NowPlaying.binding.fragmentTitle.text = musicList!![songPosition].name
+        NowPlaying.binding.fragmentAlbumName.text = musicList!![songPosition].artist
+
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 3 || resultCode == RESULT_OK) return
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (musicList!![songPosition].id != 0 && !isPlaying) exitApplication()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        overridePendingTransition(0, com.google.android.material.R.anim.mtrl_bottom_sheet_slide_out)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        overridePendingTransition(com.google.android.material.R.anim.mtrl_bottom_sheet_slide_in, 0)
+
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent != null) {
+            showMusicInterfacePlaying()
+        }
+    }
+
+    private fun showMusicInterfacePlaying() {
+        setLayout()
+        binding.interfaceSeekStart.text =
+            formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())
+        binding.interfaceSeekEnd.text =
+            formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
+        binding.seekbar.progress = musicService!!.mediaPlayer!!.currentPosition
+        binding.seekbar.max = musicService!!.mediaPlayer!!.duration
+        if (isPlaying) {
+            binding.interfacePlay.setImageResource((R.drawable.pause))
+        } else {
+            binding.interfacePlay.setImageResource((R.drawable.play))
+        }
+
+    }
+
+
+    fun initServiceAndPlaylist(
         playlist: ArrayList<MusicClass>, shuffle: Boolean,
     ) {
         val intent = Intent(this, MusicService::class.java)
         bindService(intent, this, BIND_AUTO_CREATE)
         startService(intent)
         musicList = ArrayList()
-        musicList.addAll(playlist)
-        if (shuffle) musicList.shuffle()
-        setLayout()
+        musicList!!.addAll(playlist)
+//        if (shuffle) musicList!!.shuffle()
+//        setLayout()
     }
 
-
-    override fun onCompletion(mp: MediaPlayer?) {
-
-        counter--
-    }
-
-
-    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onServiceDisconnected(name: ComponentName?) {
-        TODO("Not yet implemented")
-    }
 }

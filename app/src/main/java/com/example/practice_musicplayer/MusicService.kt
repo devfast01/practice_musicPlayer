@@ -80,7 +80,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
 
 
         val imageArt =
-            getImageArt(MusicInterface.musicList[MusicInterface.songPosition].coverArtUrl)
+            getImageArt(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl)
         val image = if (imageArt != null) {
             BitmapFactory.decodeByteArray(imageArt, 0, imageArt.size)
         } else {
@@ -88,9 +88,9 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
         }
 
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
-            .setContentTitle(MusicInterface.musicList[MusicInterface.songPosition].name)
-            .setContentText(MusicInterface.musicList[MusicInterface.songPosition].artist)
-            .setSubText(MusicInterface.musicList[MusicInterface.songPosition].date)
+            .setContentTitle(MusicInterface.musicList!![MusicInterface.songPosition].name)
+            .setContentText(MusicInterface.musicList!![MusicInterface.songPosition].artist)
+            .setSubText(MusicInterface.musicList!![MusicInterface.songPosition].date)
             .setSmallIcon(R.drawable.music_note)
             .setLargeIcon(image)
             .setStyle(
@@ -201,7 +201,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
         try {
             if (mediaPlayer == null) mediaPlayer = MediaPlayer()
             MusicInterface.musicService!!.mediaPlayer!!.reset()
-            MusicInterface.musicService!!.mediaPlayer!!.setDataSource(MusicInterface.musicList[MusicInterface.songPosition].coverArtUrl)
+            MusicInterface.musicService!!.mediaPlayer!!.setDataSource(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl)
             MusicInterface.musicService!!.mediaPlayer!!.prepare()
             MusicInterface.musicService!!.showNotification(R.drawable.pause_notification)
             MusicInterface.binding.interfacePlay.setImageResource((R.drawable.pause))

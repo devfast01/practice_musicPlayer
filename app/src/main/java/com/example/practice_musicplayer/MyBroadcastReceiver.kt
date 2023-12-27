@@ -79,24 +79,24 @@ class MyBroadcastReceiver : BroadcastReceiver(){
         try {
             MusicInterface.musicService!!.initSong()
             Glide.with(context)
-                .load(getImageArt(MusicInterface.musicList[MusicInterface.songPosition].coverArtUrl))
+                .load(getImageArt(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl))
                 .apply(
                     RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
                 ).into(MusicInterface.binding.interfaceCover)
 
             MusicInterface.binding.interfaceSongName.text =
-                MusicInterface.musicList[MusicInterface.songPosition].name
+                MusicInterface.musicList!![MusicInterface.songPosition].name
             MusicInterface.binding.interfaceArtistName.text =
-                MusicInterface.musicList[MusicInterface.songPosition].artist
+                MusicInterface.musicList!![MusicInterface.songPosition].artist
             Glide.with(context)
-                .load(getImageArt(MusicInterface.musicList[MusicInterface.songPosition].coverArtUrl))
+                .load(getImageArt(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl))
                 .apply(
                     RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
                 ).into(NowPlaying.binding.fragmentImage)
             NowPlaying.binding.fragmentTitle.text =
-                MusicInterface.musicList[MusicInterface.songPosition].name
+                MusicInterface.musicList!![MusicInterface.songPosition].name
             NowPlaying.binding.fragmentAlbumName.text =
-                MusicInterface.musicList[MusicInterface.songPosition].artist
+                MusicInterface.musicList!![MusicInterface.songPosition].artist
             playMusic()
 
         } catch (e: Exception) {

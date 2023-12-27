@@ -115,7 +115,7 @@ class MyService : Service(), AudioManager.OnAudioFocusChangeListener {
             if (mediaPlayer == null) mediaPlayer = MediaPlayer()
             MusicInterface.myService?.let {
                 it.mediaPlayer!!.reset()
-                it.mediaPlayer!!.setDataSource(MusicInterface.musicList[MusicInterface.songPosition].url)
+                it.mediaPlayer!!.setDataSource(MusicInterface.musicList!![MusicInterface.songPosition].url)
                 it.mediaPlayer!!.prepare()
                 it.showNotification()
                 MusicInterface.binding.interfacePlay.setImageResource((R.drawable.pause))

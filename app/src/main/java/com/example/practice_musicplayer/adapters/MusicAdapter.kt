@@ -61,6 +61,8 @@ class MusicAdapter(
             .error(R.drawable.image_as_cover)
             .into(holder.imageView)
 
+
+
         holder.itemView.setOnClickListener {
             sendIntent(position = position, parameter = "MusicAdapter")
         }

@@ -91,7 +91,7 @@ fun shuffleSongs() {
     checkIfListIsFull(usedNumber)
     Log.d(ContentValues.TAG, "shuffleSongs: " + usedNumber.size)
     while (newSong == MusicInterface.songPosition) {
-        newSong = getRandomNumber(MusicInterface.musicList.size)
+        newSong = getRandomNumber(MusicInterface.musicList!!.size)
     }
     MusicInterface.songPosition = newSong
 }
@@ -108,7 +108,7 @@ fun getRandomNumber(max: Int): Int {
     return number
 }
 fun checkIfListIsFull(list: MutableSet<Int>) {
-    if (list.size.toInt() == MusicInterface.musicList.size) {
+    if (list.size.toInt() == MusicInterface.musicList!!.size) {
         list.clear()
     }
 }
@@ -119,13 +119,13 @@ fun setSongPosition(increment: Boolean) {
             if (MusicInterface.isShuffling && MusicInterface.counter == 0) {
                 shuffleSongs()
             } else {
-                if (MusicInterface.musicList.size - 1 == MusicInterface.songPosition) {
+                if (MusicInterface.musicList!!.size - 1 == MusicInterface.songPosition) {
                     MusicInterface.songPosition = 0
                 } else ++MusicInterface.songPosition
             }
         } else {
             if (0 == MusicInterface.songPosition) MusicInterface.songPosition =
-                MusicInterface.musicList.size - 1
+                MusicInterface.musicList!!.size - 1
             else --MusicInterface.songPosition
         }
     }
