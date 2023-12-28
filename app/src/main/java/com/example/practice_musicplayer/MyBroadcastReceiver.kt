@@ -79,7 +79,7 @@ class MyBroadcastReceiver : BroadcastReceiver(){
         try {
             MusicInterface.musicService!!.initSong()
             Glide.with(context)
-                .load(getImageArt(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl))
+                .load(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl)
                 .apply(
                     RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
                 ).into(MusicInterface.binding.interfaceCover)
@@ -89,7 +89,7 @@ class MyBroadcastReceiver : BroadcastReceiver(){
             MusicInterface.binding.interfaceArtistName.text =
                 MusicInterface.musicList!![MusicInterface.songPosition].artist
             Glide.with(context)
-                .load(getImageArt(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl))
+                .load(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl)
                 .apply(
                     RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
                 ).into(NowPlaying.binding.fragmentImage)

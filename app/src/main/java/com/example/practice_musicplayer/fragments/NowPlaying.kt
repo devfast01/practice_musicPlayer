@@ -13,13 +13,16 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.practice_musicplayer.MainActivity
 import com.example.practice_musicplayer.R
 import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.databinding.FragmentNowPlayingBinding
 import com.example.practice_musicplayer.getImageArt
+import com.example.practice_musicplayer.getNewSongs
 import com.example.practice_musicplayer.setSongPosition
 import com.example.practice_musicplayer.utils.OnSwipeTouchListener
 
+@Suppress("DEPRECATION")
 class NowPlaying : Fragment() {
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -38,6 +41,7 @@ class NowPlaying : Fragment() {
             if (MusicInterface.isPlaying) pauseMusic()
             else playMusic()
         }
+
 
         // Inflate the layout for this fragment
         return view
@@ -68,16 +72,16 @@ class NowPlaying : Fragment() {
                     nextPrevMusic(increment = false)
                 }
             })
-
+            Log.e("musiclist", MusicInterface.musicList.toString())
             Glide.with(this)
-                .load(getImageArt(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl))
+                .load(MusicInterface.musicList[MusicInterface.songPosition].coverArtUrl)
                 .apply(
                     RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
                 ).into(binding.fragmentImage)
             binding.fragmentTitle.text =
-                MusicInterface.musicList!![MusicInterface.songPosition].name
+                MusicInterface.musicList[MusicInterface.songPosition].name
             binding.fragmentAlbumName.text =
-                MusicInterface.musicList!![MusicInterface.songPosition].artist
+                MusicInterface.musicList[MusicInterface.songPosition].artist
             if (MusicInterface.isPlaying) binding.fragmentButton.setImageResource(R.drawable.pause_now)
             else binding.fragmentButton.setImageResource(R.drawable.play_now)
 

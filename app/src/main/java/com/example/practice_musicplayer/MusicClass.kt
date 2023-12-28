@@ -11,6 +11,12 @@ import android.media.MediaMetadataRetriever
 import android.util.Log
 import androidx.core.app.ServiceCompat
 import com.example.practice_musicplayer.activities.MusicInterface
+import com.example.practice_musicplayer.utils.RetrofitService
+import org.json.JSONException
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
@@ -129,4 +135,69 @@ fun setSongPosition(increment: Boolean) {
             else --MusicInterface.songPosition
         }
     }
+}
+
+
+
+fun getNewSongs() {
+    val api_Service = RetrofitService.getInstance()
+
+    val apiService =
+        api_Service.getNewSongs(
+        )
+
+    apiService?.enqueue(object : Callback<String?> {
+        override fun onResponse(call: Call<String?>, response: Response<String?>) {
+            if (response.isSuccessful) {
+                if (response.body() != null) {
+                    val jsonresponse: String = response.body().toString()
+                    // on below line we are initializing our adapter.
+//                        Log.d("response", jsonresponse.toString())
+                    recycleNewSongs(jsonresponse)
+                } else {
+                    Log.i(
+                        "onEmptyResponse",
+                        "Returned empty response"
+                    )
+                }
+            }
+        }
+
+        override fun onFailure(call: Call<String?>, t: Throwable) {
+            Log.e(
+                "ERROR",
+                t.message.toString()
+            )
+        }
+    })
+}
+
+fun recycleNewSongs(response: String) = try {
+    val modelRecyclerArrayList: java.util.ArrayList<MusicClass> = java.util.ArrayList()
+    val obj = JSONObject(response)
+    val dataArray = obj.getJSONArray("data")
+//        Log.d("RESPONSE", dataArray.toString())
+
+    for (i in 0 until dataArray.length()) {
+        val dataObject = dataArray.getJSONObject(i)
+
+        val musicItem = MusicClass(
+            id = dataObject.getInt("id"),
+            date = dataObject.getString("date"),
+            name = dataObject.getString("name"),
+            duration = dataObject.getString("duration"),
+            artist = dataObject.getString("artist"),
+            coverArtUrl = dataObject.getString("cover_art_url"),
+            url = dataObject.getString("url")
+        )
+
+        modelRecyclerArrayList.add(musicItem)
+    }
+
+//        Log.d("RESPONSE", modelRecyclerArrayList.toString())
+
+    MainActivity.songList = modelRecyclerArrayList
+
+} catch (e: JSONException) {
+    e.printStackTrace()
 }

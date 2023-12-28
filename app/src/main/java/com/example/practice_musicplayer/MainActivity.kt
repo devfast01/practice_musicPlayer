@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     private val apiService = RetrofitService.getInstance()
 
     companion object {
-        lateinit var songList: ArrayList<MusicClass>
+        var songList: ArrayList<MusicClass>? = null
         lateinit var recyclerView: RecyclerView
         lateinit var musicListSearch: ArrayList<MusicClass>
         var isSearching: Boolean = false
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getNewSongs() {
+     fun getNewSongs() {
         val apiService =
             apiService.getNewSongs(
             )
@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
 //        Log.d("RESPONSE", modelRecyclerArrayList.toString())
 
         songList = modelRecyclerArrayList
-        newSongRecycleData(songList)
+        newSongRecycleData(songList!!)
     } catch (e: JSONException) {
         e.printStackTrace()
     }
