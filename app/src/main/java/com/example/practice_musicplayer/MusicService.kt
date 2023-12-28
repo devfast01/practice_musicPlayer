@@ -80,6 +80,18 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             baseContext, 3, playIntent, flag
         )
 
+        val nextIntent =
+            Intent(baseContext, MyBroadcastReceiver::class.java).setAction(ApplicationClass.NEXT)
+        val nextPendingIntent = PendingIntent.getBroadcast(
+            baseContext, 3, nextIntent, flag
+        )
+
+        val exitIntent =
+            Intent(baseContext, MyBroadcastReceiver::class.java).setAction(ApplicationClass.EXIT)
+        val exitPendingIntent = PendingIntent.getBroadcast(
+            baseContext, 3, exitIntent, flag
+        )
+
         createNotificationChannel()
 
         val notificationIntent = Intent(this, MusicInterface::class.java)
@@ -95,6 +107,11 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             .setSmallIcon(R.drawable.music_note)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setOnlyAlertOnce(true)
+            .addAction(R.drawable.navigate_before_notification, "Previous", prevPendingIntent)
+            .addAction(playPauseButton, "PlayPause", playPendingIntent)
+            .addAction(R.drawable.navigate_next_notification, "Next", nextPendingIntent)
+            .addAction(R.drawable.close_notification, "Exit", exitPendingIntent)
             .build()
 
 
