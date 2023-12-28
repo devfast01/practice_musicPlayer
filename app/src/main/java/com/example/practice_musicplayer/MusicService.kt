@@ -1,6 +1,8 @@
 package com.example.practice_musicplayer
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
@@ -78,34 +80,43 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             baseContext, 3, playIntent, flag
         )
 
+        createNotificationChannel()
 
-        val imageArt =
-            getImageArt(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl)
-        val image = if (imageArt != null) {
-            BitmapFactory.decodeByteArray(imageArt, 0, imageArt.size)
-        } else {
-            BitmapFactory.decodeResource(resources, R.drawable.image_as_cover)
-        }
+        val notificationIntent = Intent(this, MusicInterface::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
+        )
 
-        val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
-            .setContentTitle(MusicInterface.musicList!![MusicInterface.songPosition].name)
-            .setContentText(MusicInterface.musicList!![MusicInterface.songPosition].artist)
-            .setSubText(MusicInterface.musicList!![MusicInterface.songPosition].date)
+        val notification = NotificationCompat.Builder(this, "12")
+            .setContentTitle(MusicInterface.musicList[MusicInterface.songPosition].name)
+            .setContentText(MusicInterface.musicList[MusicInterface.songPosition].artist)
+            .setSubText(MusicInterface.musicList[MusicInterface.songPosition].name)
             .setSmallIcon(R.drawable.music_note)
-            .setLargeIcon(image)
-            .setStyle(
-                androidx.media.app.NotificationCompat.MediaStyle()
-                    .setMediaSession(mediaSession.sessionToken)
-                    .setShowActionsInCompactView(0, 1, 2)
-            ).setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setSilent(true)
-            .setContentIntent(contentIntent)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setOnlyAlertOnce(true)
-            .addAction(R.drawable.navigate_before_notification, "Previous", prevPendingIntent)
-            .addAction(playPauseButton, "PlayPause", playPendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
             .build()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+
+//        val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
+//            .setContentTitle(MusicInterface.musicList[MusicInterface.songPosition].name)
+//            .setContentText(MusicInterface.musicList[MusicInterface.songPosition].artist)
+//            .setSubText(MusicInterface.musicList[MusicInterface.songPosition].date)
+//            .setSmallIcon(R.drawable.music_note)
+//            .setStyle(
+//                androidx.media.app.NotificationCompat.MediaStyle()
+//                    .setMediaSession(mediaSession.sessionToken)
+//                    .setShowActionsInCompactView(0, 1, 2)
+//            ).setPriority(NotificationCompat.PRIORITY_HIGH)
+//            .setSilent(true)
+//            .setContentIntent(contentIntent)
+//            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setOnlyAlertOnce(true)
+//            .addAction(R.drawable.navigate_before_notification, "Previous", prevPendingIntent)
+//            .addAction(playPauseButton, "PlayPause", playPendingIntent)
+//            .build()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val playbackSpeed = if (MusicInterface.isPlaying) 1F else 0F
             mediaSession.setMetadata(
                 MediaMetadataCompat.Builder()
@@ -194,14 +205,14 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
                 }
             })
         }
-        startForeground(3, notification)
+            startForeground(1, notification)
     }
 
     fun initSong() {
         try {
             if (mediaPlayer == null) mediaPlayer = MediaPlayer()
             MusicInterface.musicService!!.mediaPlayer!!.reset()
-            MusicInterface.musicService!!.mediaPlayer!!.setDataSource(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl)
+            MusicInterface.musicService!!.mediaPlayer!!.setDataSource(MusicInterface.musicList[MusicInterface.songPosition].coverArtUrl)
             MusicInterface.musicService!!.mediaPlayer!!.prepare()
             MusicInterface.musicService!!.showNotification(R.drawable.pause_notification)
             MusicInterface.binding.interfacePlay.setImageResource((R.drawable.pause))
@@ -240,5 +251,13 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
         }
     }
 
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val serviceChannel = NotificationChannel("12", "Foreground Service Channel",
+                NotificationManager.IMPORTANCE_LOW)
+            val manager = getSystemService(NotificationManager::class.java)
+            manager!!.createNotificationChannel(serviceChannel)
+        }
+    }
 
 }

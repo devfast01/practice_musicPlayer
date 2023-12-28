@@ -119,9 +119,9 @@ class NowPlaying : Fragment() {
                 RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
             ).into(binding.fragmentImage)
         binding.fragmentTitle.text =
-            MusicInterface.musicList!![MusicInterface.songPosition].name
+            MusicInterface.musicList[MusicInterface.songPosition].name
         binding.fragmentAlbumName.text =
-            MusicInterface.musicList!![MusicInterface.songPosition].artist
+            MusicInterface.musicList[MusicInterface.songPosition].artist
         playMusic()
     }
 

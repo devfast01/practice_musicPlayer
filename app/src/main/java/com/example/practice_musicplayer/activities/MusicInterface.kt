@@ -398,7 +398,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         bindService(intent, this, BIND_AUTO_CREATE)
         startService(intent)
         musicList = ArrayList()
-        musicList!!.addAll(playlist)
+        musicList.addAll(playlist)
 //        if (shuffle) musicList!!.shuffle()
 //        setLayout()
     }
