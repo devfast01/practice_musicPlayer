@@ -69,10 +69,7 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        binding.sort.setOnClickListener {
-            getNewSongs()
-        }
-
+        getNewSongs()
 
 
         binding.navView.setNavigationItemSelectedListener {
@@ -104,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-     fun getNewSongs() {
+    fun getNewSongs() {
         val apiService =
             apiService.getNewSongs(
             )
@@ -165,7 +162,7 @@ class MainActivity : AppCompatActivity() {
         e.printStackTrace()
     }
 
-    private fun newSongRecycleData(array:ArrayList<MusicClass>) {
+    private fun newSongRecycleData(array: ArrayList<MusicClass>) {
         recyclerView = binding.listView
         musicAdapter = MusicAdapter(this, array)
         recyclerView.adapter = musicAdapter
