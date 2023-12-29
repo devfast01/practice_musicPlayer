@@ -32,9 +32,9 @@ class NowPlaying : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_now_playing, container, false)
-        binding = FragmentNowPlayingBinding.bind(view)
+    ): View {
+        binding = FragmentNowPlayingBinding.inflate(inflater, container, false)
+        val view: View = binding.root
         binding.root.visibility = View.GONE
 
         binding.fragmentButton.setOnClickListener {
