@@ -107,6 +107,11 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             .setSmallIcon(R.drawable.music_note)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
+            .setStyle(
+                androidx.media.app.NotificationCompat.MediaStyle()
+                    .setMediaSession(mediaSession.sessionToken)
+                    .setShowActionsInCompactView(0, 1, 2)
+            )
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setOnlyAlertOnce(true)
             .addAction(R.drawable.navigate_before_notification, "Previous", prevPendingIntent)
             .addAction(playPauseButton, "PlayPause", playPendingIntent)
