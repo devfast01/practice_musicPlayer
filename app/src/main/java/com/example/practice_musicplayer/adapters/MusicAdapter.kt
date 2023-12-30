@@ -86,15 +86,16 @@ class MusicAdapter(
     override fun getItemCount(): Int {
         return musicList.size
     }
-
-
-
+    fun updateMusicList(searchList: ArrayList<MusicClass>) {
+        musicList = ArrayList()
+        musicList.addAll(searchList)
+        notifyDataSetChanged()
+    }
     private fun sendIntent(position: Int, parameter: String) {
         val intent = Intent(context, MusicInterface::class.java)
         intent.putExtra("index", position)
         intent.putExtra("class", parameter)
         ContextCompat.startActivity(context, intent, null)
     }
-
 
 }

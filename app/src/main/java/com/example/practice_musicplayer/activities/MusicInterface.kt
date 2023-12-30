@@ -353,7 +353,23 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
     override fun onDestroy() {
         super.onDestroy()
-        if (MainActivity.songList!![songPosition].id != 0 && !isPlaying) exitApplication()
+        if (MainActivity.songList!![songPosition].id == 0 && !isPlaying) exitApplication()
+    }
+
+    private fun showMusicInterfacePlaying() {
+        setLayout()
+        binding.interfaceSeekStart.text =
+            formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())
+        binding.interfaceSeekEnd.text =
+            formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
+        binding.seekbar.progress = musicService!!.mediaPlayer!!.currentPosition
+        binding.seekbar.max = musicService!!.mediaPlayer!!.duration
+        if (isPlaying) {
+            binding.interfacePlay.setImageResource((R.drawable.pause))
+        } else {
+            binding.interfacePlay.setImageResource((R.drawable.play))
+        }
+
     }
 
     override fun onPause() {
@@ -373,24 +389,6 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             showMusicInterfacePlaying()
         }
     }
-
-    private fun showMusicInterfacePlaying() {
-        setLayout()
-        binding.interfaceSeekStart.text =
-            formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())
-        binding.interfaceSeekEnd.text =
-            formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
-        binding.seekbar.progress = musicService!!.mediaPlayer!!.currentPosition
-        binding.seekbar.max = musicService!!.mediaPlayer!!.duration
-        if (isPlaying) {
-            binding.interfacePlay.setImageResource((R.drawable.pause))
-        } else {
-            binding.interfacePlay.setImageResource((R.drawable.play))
-        }
-
-    }
-
-
     fun initServiceAndPlaylist(
         playlist: ArrayList<MusicClass>, shuffle: Boolean,
     ) {
@@ -400,7 +398,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         musicList = ArrayList()
         musicList.addAll(playlist)
 //        if (shuffle) musicList!!.shuffle()
-//        setLayout()
+        setLayout()
     }
 
 }

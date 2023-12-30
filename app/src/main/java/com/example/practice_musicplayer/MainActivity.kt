@@ -23,9 +23,15 @@ import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.adapters.MusicAdapter
 import com.example.practice_musicplayer.databinding.ActivityMainBinding
 import com.example.practice_musicplayer.utils.RetrofitService
+import com.example.practice_musicplayer.utils.WaveAnimation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.simform.refresh.SSPullToRefreshLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -51,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         lateinit var binding: ActivityMainBinding
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -71,6 +76,19 @@ class MainActivity : AppCompatActivity() {
 
         getNewSongs()
 
+        //for refreshing layout on swipe from top
+        binding.refreshLayout.setRefreshView(WaveAnimation(this@MainActivity))
+        binding.refreshLayout.setOnRefreshListener(object :
+            SSPullToRefreshLayout.OnRefreshListener {
+            override fun onRefresh() {
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(1000)
+                    getNewSongs()
+                    Log.d("Begli" , songList.toString())
+                    binding.refreshLayout.setRefreshing(false) // This stops refreshing
+                }
+            }
+        })
 
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -172,12 +190,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item))
-            return true
-        return super.onOptionsItemSelected(item)
 
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -189,6 +202,14 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         if (MusicInterface.musicService != null) binding.nowPlaying.visibility = View.VISIBLE
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item))
+            return true
+        return super.onOptionsItemSelected(item)
+
+    }
+
 }
 
 
