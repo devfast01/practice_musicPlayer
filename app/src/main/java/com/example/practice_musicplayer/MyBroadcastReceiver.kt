@@ -71,32 +71,32 @@ class MyBroadcastReceiver : BroadcastReceiver(){
         MusicInterface.musicService!!.mediaPlayer!!.start()
         MusicInterface.musicService!!.showNotification(R.drawable.pause_notification)
         NowPlaying.binding.fragmentButton.setImageResource(R.drawable.pause_now)
-
     }
 
 
     fun prevNextMusic(increment: Boolean, context: Context) {
         try {
+            setSongPosition(increment = increment)
             MusicInterface.musicService!!.initSong()
             Glide.with(context)
-                .load(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl)
+                .load(MusicInterface.musicList[MusicInterface.songPosition].coverArtUrl)
                 .apply(
                     RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
                 ).into(MusicInterface.binding.interfaceCover)
 
             MusicInterface.binding.interfaceSongName.text =
-                MusicInterface.musicList!![MusicInterface.songPosition].name
+                MusicInterface.musicList[MusicInterface.songPosition].name
             MusicInterface.binding.interfaceArtistName.text =
-                MusicInterface.musicList!![MusicInterface.songPosition].artist
+                MusicInterface.musicList[MusicInterface.songPosition].artist
             Glide.with(context)
-                .load(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl)
+                .load(MusicInterface.musicList[MusicInterface.songPosition].coverArtUrl)
                 .apply(
                     RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
                 ).into(NowPlaying.binding.fragmentImage)
             NowPlaying.binding.fragmentTitle.text =
-                MusicInterface.musicList!![MusicInterface.songPosition].name
+                MusicInterface.musicList[MusicInterface.songPosition].name
             NowPlaying.binding.fragmentAlbumName.text =
-                MusicInterface.musicList!![MusicInterface.songPosition].artist
+                MusicInterface.musicList[MusicInterface.songPosition].artist
             playMusic()
 
         } catch (e: Exception) {
