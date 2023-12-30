@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.Main).launch {
                     delay(1000)
                     getNewSongs()
+                    musicAdapter.updateMusicList(songList!!)
                     Log.d("Begli" , songList.toString())
                     binding.refreshLayout.setRefreshing(false) // This stops refreshing
                 }
