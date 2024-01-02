@@ -43,6 +43,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     companion object {
 // git
         // first commit
+        // second commit
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityMusicInterfaceBinding
         lateinit var musicList: ArrayList<MusicClass>
