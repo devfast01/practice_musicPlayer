@@ -41,7 +41,7 @@ import com.google.android.material.snackbar.Snackbar
 class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionListener {
 
     companion object {
-
+// git
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityMusicInterfaceBinding
         lateinit var musicList: ArrayList<MusicClass>
