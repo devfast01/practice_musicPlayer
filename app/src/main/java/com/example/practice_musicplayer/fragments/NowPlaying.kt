@@ -114,7 +114,7 @@ class NowPlaying : Fragment() {
         setSongPosition(increment = increment)
         MusicInterface.musicService!!.initSong()
         Glide.with(requireContext())
-            .load(getImageArt(MusicInterface.musicList!![MusicInterface.songPosition].coverArtUrl))
+            .load(getImageArt(MusicInterface.musicList[MusicInterface.songPosition].coverArtUrl))
             .apply(
                 RequestOptions().placeholder(R.drawable.image_as_cover).centerCrop()
             ).into(binding.fragmentImage)

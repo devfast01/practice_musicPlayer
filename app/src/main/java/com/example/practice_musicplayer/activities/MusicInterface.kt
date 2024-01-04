@@ -92,6 +92,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             binding.interfaceSongName.text =
                 MainActivity.songList!![songPosition].name
             binding.interfaceArtistName.text = MainActivity.songList!![songPosition].artist
+
         } else {
             Log.e("ELSE ", intent.getIntExtra("index", 0).toString())
             Log.e("aglama", MainActivity.songList.toString())
@@ -268,7 +269,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         }
     }
 
-    private fun playMusic() {
+    fun playMusic() {
         try {
             musicService!!.audioManager.requestAudioFocus(
                 musicService, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN
@@ -389,6 +390,7 @@ class MusicInterface : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             showMusicInterfacePlaying()
         }
     }
+
     fun initServiceAndPlaylist(
         playlist: ArrayList<MusicClass>, shuffle: Boolean,
     ) {

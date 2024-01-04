@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Main content -->
+    <FrameLayout
+        android:id="@+id/mainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- Your main content views go here -->
+    </FrameLayout>
+
+    <!-- SlidingUpPanelLayout requires exactly 2 children -->
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        app:umanoPanelHeight="68dp"
+        app:umanoShadowHeight="4dp">
+
+        <!-- Sliding panel content -->
+        <FrameLayout
+            android:id="@+id/slidingPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- Your sliding panel views go here -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sliding Panel Content"/>
+        </FrameLayout>
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+    <Button
+        android:id="@+id/toggle_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Toggle Panel State"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+</RelativeLayout>

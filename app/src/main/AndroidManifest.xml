@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
-
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -23,11 +22,14 @@
         android:theme="@style/Theme.Practice_musicPlayer"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+<!--        <activity-->
+<!--            android:name=".SlidingActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activities.MusicInterface"
             android:exported="true"
             android:screenOrientation="fullSensor">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -40,7 +42,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".SlidingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,23 +53,20 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-
         </activity>
 
-        <service
-            android:name=".MusicService"
-            android:foregroundServiceType="mediaPlayback"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
-        </service>
+<!--        <service-->
+<!--            android:name=".MusicService"-->
+<!--            android:exported="true"-->
+<!--            android:foregroundServiceType="mediaPlayback">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MEDIA_BUTTON" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
 
-        <receiver
-            android:name=".MyBroadcastReceiver"
-            android:enabled="true">
-
-        </receiver>
+<!--        <receiver-->
+<!--            android:name=".MyBroadcastReceiver"-->
+<!--            android:enabled="true" />-->
     </application>
 
 </manifest>
