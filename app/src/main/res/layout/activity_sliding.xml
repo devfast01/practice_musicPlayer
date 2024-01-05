@@ -1,46 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/parentLayout"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- Main content -->
-    <FrameLayout
-        android:id="@+id/mainContent"
+    android:layout_height="match_parent"
+    >
+    <!-- Your main content -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <!-- Your main content views go here -->
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        android:layout_above="@id/sliding_layout"/>
 
-    <!-- SlidingUpPanelLayout requires exactly 2 children -->
+    <!-- SlidingUpPanel layout -->
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom"
-        app:umanoPanelHeight="68dp"
-        app:umanoShadowHeight="4dp">
+        sothree:umanoPanelHeight="0dp"
+        sothree:umanoParallaxOffset="100dp"
+        sothree:umanoDragView="@+id/dragView"
+        sothree:umanoOverlay="true"
+        sothree:umanoScrollableView="@+id/recyclerView"
+        sothree:umanoGravity="bottom">
 
-        <!-- Sliding panel content -->
-        <FrameLayout
-            android:id="@+id/slidingPanel"
+        <!-- Set gravity to "top" or "bottom" -->
+
+        <!-- Your sliding panel content -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <!-- Your sliding panel views go here -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sliding Panel Content"/>
-        </FrameLayout>
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@android:color/white">
 
-    <Button
-        android:id="@+id/toggle_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Toggle Panel State"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
+            <!-- Drag handle for the sliding panel -->
+            <View
+                android:id="@+id/dragView"
+                android:layout_width="40dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray"
+                android:onClick="togglePanel"/>
+
+            <!-- Your sliding panel content goes here -->
+
+        </LinearLayout>
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 </RelativeLayout>
