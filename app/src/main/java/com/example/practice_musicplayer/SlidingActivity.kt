@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.practice_musicplayer.databinding.ActivitySlidingBinding
@@ -20,32 +21,37 @@ open class SlidingActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         binding = ActivitySlidingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val slidingLayout: SlidingUpPanelLayout = findViewById(R.id.sliding_layout)
+        val text: TextView = findViewById(R.id.text)
+        val btnShow: Button = findViewById(R.id.btn_show)
+        val btnHide: Button = findViewById(R.id.btn_hide)
 
-
-        // Set gravity programmatically
-        binding.slidingLayout.setGravity(Gravity.START)
-
-        // Optional: Set up sliding panel listener to handle panel state changes
-        binding.slidingLayout.addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
+        // Set up the Sliding UpPanelLayout
+        slidingLayout.addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
             override fun onPanelSlide(panel: View?, slideOffset: Float) {
-
-                // Panel is sliding
+                // Do something when the panel is sliding
+                Log.e("panel", "Sliding")
             }
 
             override fun onPanelStateChanged(panel: View?, previousState: SlidingUpPanelLayout.PanelState?, newState: SlidingUpPanelLayout.PanelState?) {
-                // Panel state changed
+                // Do something when the panel state changes
+                Log.e("panel", "Hide")
             }
         })
-    }
 
-    // Optional: Method to toggle the sliding panel
-    fun togglePanel(view: View) {
-        val slidingLayout: SlidingUpPanelLayout = findViewById(R.id.sliding_layout)
-        slidingLayout.panelState = if (slidingLayout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED) {
-            SlidingUpPanelLayout.PanelState.COLLAPSED
-        } else {
-            SlidingUpPanelLayout.PanelState.EXPANDED
+        // Show the panel when the "Show" button is clicked
+        btnShow.setOnClickListener {
+            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+        }
+
+        // Hide the panel when the "Hide" button is clicked
+        btnHide.setOnClickListener {
+            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        }
+
+        // Handle clicks on the main content
+        text.setOnClickListener {
+            // Do something when the main content is clicked
         }
     }
-
 }
