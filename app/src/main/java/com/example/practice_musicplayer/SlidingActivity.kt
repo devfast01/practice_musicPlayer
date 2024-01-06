@@ -3,6 +3,7 @@ package com.example.practice_musicplayer
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -20,9 +21,9 @@ open class SlidingActivity : AppCompatActivity(){
         binding = ActivitySlidingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set gravity programmatically
-        binding.slidingLayout.panelGravity = SlidingUpPanelLayout.PanelGravity.BOTTOM // or SlidingUpPanelLayout.PanelGravity.TOP
 
+        // Set gravity programmatically
+        binding.slidingLayout.setGravity(Gravity.START)
 
         // Optional: Set up sliding panel listener to handle panel state changes
         binding.slidingLayout.addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
