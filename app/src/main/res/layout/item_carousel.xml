@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="item"
-            type="String" />
-    </data>
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mcv_card"
         style="@style/Widget.Material3.CardView.Elevated"
