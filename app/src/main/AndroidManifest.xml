@@ -22,12 +22,14 @@
         android:theme="@style/Theme.Practice_musicPlayer"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".ViewPager"
-            android:exported="false" />
+
+<!--        <activity-->
+<!--            android:name=".ViewPager"-->
+<!--            android:exported="false" />-->
         <!-- <activity -->
         <!-- android:name=".SlidingActivity" -->
         <!-- android:exported="false" /> -->
+
         <activity
             android:name=".activities.MusicInterface"
             android:exported="true"
@@ -44,7 +46,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SlidingActivity"
+            android:name=".ViewPager"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
