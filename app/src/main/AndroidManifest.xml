@@ -22,10 +22,12 @@
         android:theme="@style/Theme.Practice_musicPlayer"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-<!--        <activity-->
-<!--            android:name=".SlidingActivity"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".ViewPager"
+            android:exported="false" />
+        <!-- <activity -->
+        <!-- android:name=".SlidingActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".activities.MusicInterface"
             android:exported="true"
@@ -55,18 +57,18 @@
                 android:value="" />
         </activity>
 
-<!--        <service-->
-<!--            android:name=".MusicService"-->
-<!--            android:exported="true"-->
-<!--            android:foregroundServiceType="mediaPlayback">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MEDIA_BUTTON" />-->
-<!--            </intent-filter>-->
-<!--        </service>-->
+        <service
+            android:name=".MusicService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </service>
 
-<!--        <receiver-->
-<!--            android:name=".MyBroadcastReceiver"-->
-<!--            android:enabled="true" />-->
+        <receiver
+            android:name=".MyBroadcastReceiver"
+            android:enabled="true" />
     </application>
 
 </manifest>

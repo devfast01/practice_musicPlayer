@@ -23,9 +23,10 @@ open class SlidingActivity : AppCompatActivity(){
         binding = ActivitySlidingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val slidingLayout: SlidingUpPanelLayout = findViewById(R.id.sliding_layout)
-        val text: TextView = findViewById(R.id.text)
-        val btnShow: Button = findViewById(R.id.btn_show)
-        val btnHide: Button = findViewById(R.id.btn_hide)
+//        val text: TextView = findViewById(R.id.text)
+//        val btnShow: Button = findViewById(R.id.btn_show)
+//        val btnHide: Button = findViewById(R.id.btn_hide)
+        binding.nowPlaying123.visibility = View.VISIBLE
 
         // Set up the Sliding UpPanelLayout
         slidingLayout.addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
@@ -41,23 +42,23 @@ open class SlidingActivity : AppCompatActivity(){
         })
 
         // Show the panel when the "Show" button is clicked
-        btnShow.setOnClickListener {
-            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
-        }
-
-        // Hide the panel when the "Hide" button is clicked
-        btnHide.setOnClickListener {
-            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-        }
+//        btnShow.setOnClickListener {
+//            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+//        }
+//
+//        // Hide the panel when the "Hide" button is clicked
+//        btnHide.setOnClickListener {
+//            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+//        }
 
         // Handle clicks on the main content
-        text.setOnClickListener {
-            // Do something when the main content is clicked
-        }
+//        text.setOnClickListener {
+//            // Do something when the main content is clicked
+//        }
     }
 
     override fun onResume() {
         super.onResume()
-        if (MusicInterface.musicService != null) MainActivity.binding.nowPlaying.visibility = View.VISIBLE
+        binding.nowPlaying123.visibility = View.VISIBLE
     }
 }

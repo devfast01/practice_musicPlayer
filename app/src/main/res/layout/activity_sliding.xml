@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".SlidingActivity">
 
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/nowPlaying"-->
+<!--        android:name="com.example.practice_musicplayer.fragments.ExamplePlaying"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        tools:layout="@layout/fragment_example_playing" />-->
+
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
@@ -13,7 +27,7 @@
         android:gravity="bottom"
         sothree:umanoDragView="@+id/dragView"
         sothree:umanoOverlay="true"
-        sothree:umanoPanelHeight="68dp"
+        sothree:umanoPanelHeight="65dp"
         sothree:umanoShadowHeight="4dp">
 
         <!-- MAIN CONTENT -->
@@ -22,42 +36,17 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:clickable="true"
-                android:focusable="false"
-                android:focusableInTouchMode="true"
-                android:gravity="center"
-                android:text="content"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="16sp"
-                tools:ignore="TouchTargetSizeCheck" />
-
             <Button
                 android:id="@+id/btn_show"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/text"
                 android:layout_centerInParent="true"
                 android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
                 android:text="show"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/nowPlaying"
-                android:name="com.example.practice_musicplayer.fragments.NowPlaying"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout="@layout/fragment_now_playing" />
-        </RelativeLayout>
+                   </RelativeLayout>
 
         <!-- SLIDING LAYOUT -->
         <LinearLayout
@@ -74,26 +63,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textColor="@android:color/holo_green_dark"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="slide"
-                    android:textSize="14sp" />
-
-                <Button
-                    android:id="@+id/btn_hide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical|right"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="hide"
-                    android:textSize="14sp" />
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/nowPlaying123"
+                    android:name="com.example.practice_musicplayer.fragments.ExamplePlaying"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout="@layout/fragment_example_playing" />
 
             </LinearLayout>
 
