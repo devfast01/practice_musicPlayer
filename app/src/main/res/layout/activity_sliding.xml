@@ -81,16 +81,20 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFCCCC">
+                android:layout_height="match_parent"
+                android:background="#F10A0A">
 
-                <ImageView
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/image_as_cover" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
         </LinearLayout>
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>

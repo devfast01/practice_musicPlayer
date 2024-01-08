@@ -10,12 +10,26 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.practice_musicplayer.activities.MusicInterface
+import com.example.practice_musicplayer.adapters.AdapterViewPager
 import com.example.practice_musicplayer.databinding.ActivitySlidingBinding
+import com.example.practice_musicplayer.fragments.ExamplePlaying
+import com.example.practice_musicplayer.utils.RetrofitService
+import com.example.practice_musicplayer.utils.ViewPagerExtensions.addCarouselEffect
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import org.json.JSONException
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.ArrayList
 
 
 open class SlidingActivity : AppCompatActivity(){
     private lateinit var binding:ActivitySlidingBinding
+    lateinit var viewPagerAdapter: AdapterViewPager
+    private val apiService = RetrofitService.getInstance()
+    private var songList: ArrayList<MusicClass>? = null
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,20 +55,77 @@ open class SlidingActivity : AppCompatActivity(){
             }
         })
 
-        // Show the panel when the "Show" button is clicked
-//        btnShow.setOnClickListener {
-//            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
-//        }
-//
-//        // Hide the panel when the "Hide" button is clicked
-//        btnHide.setOnClickListener {
-//            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-//        }
 
-        // Handle clicks on the main content
-//        text.setOnClickListener {
-//            // Do something when the main content is clicked
-//        }
+        getNewSongs()
+    }
+
+    private fun getNewSongs() {
+        val apiService =
+            apiService.getNewSongs(
+            )
+
+        apiService?.enqueue(object : Callback<String?> {
+            override fun onResponse(call: Call<String?>, response: Response<String?>) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        val jsonresponse: String = response.body().toString()
+                        // on below line we are initializing our adapter.
+                        Log.d("response", jsonresponse)
+                        recycleNewSongs(jsonresponse)
+                    } else {
+                        Log.i(
+                            "onEmptyResponse",
+                            "Returned empty response"
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<String?>, t: Throwable) {
+                Log.e(
+                    "ERROR",
+                    t.message.toString()
+                )
+            }
+        })
+    }
+
+    private fun recycleNewSongs(response: String) = try {
+        val modelRecyclerArrayList: ArrayList<MusicClass> = ArrayList()
+        val obj = JSONObject(response)
+        val dataArray = obj.getJSONArray("data")
+//        Log.d("RESPONSE", dataArray.toString())
+
+        for (i in 0 until dataArray.length()) {
+            val dataObject = dataArray.getJSONObject(i)
+
+            val musicItem = MusicClass(
+                id = dataObject.getInt("id"),
+                date = dataObject.getString("date"),
+                name = dataObject.getString("name"),
+                duration = dataObject.getString("duration"),
+                artist = dataObject.getString("artist"),
+                coverArtUrl = dataObject.getString("cover_art_url"),
+                url = dataObject.getString("url")
+            )
+
+            modelRecyclerArrayList.add(musicItem)
+        }
+
+//        Log.d("RESPONSE", modelRecyclerArrayList.toString())
+
+        songList = modelRecyclerArrayList
+        newSongRecycleData(songList!!)
+    } catch (e: JSONException) {
+        e.printStackTrace()
+    }
+
+    private fun newSongRecycleData(array: ArrayList<MusicClass>) {
+
+        binding.viewPager.addCarouselEffect()
+        viewPagerAdapter = AdapterViewPager(this, array)
+        binding.viewPager.adapter = viewPagerAdapter
+
     }
 
     override fun onResume() {
