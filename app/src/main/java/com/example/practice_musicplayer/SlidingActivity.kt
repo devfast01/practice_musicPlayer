@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.databinding.ActivitySlidingBinding
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
@@ -53,5 +54,10 @@ open class SlidingActivity : AppCompatActivity(){
         text.setOnClickListener {
             // Do something when the main content is clicked
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (MusicInterface.musicService != null) MainActivity.binding.nowPlaying.visibility = View.VISIBLE
     }
 }
