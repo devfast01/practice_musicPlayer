@@ -78,7 +78,6 @@ open class SlidingActivity : AppCompatActivity(){
             }
         })
 
-
         getNewSongs()
     }
 
