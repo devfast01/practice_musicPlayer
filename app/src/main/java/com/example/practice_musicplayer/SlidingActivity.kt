@@ -3,6 +3,7 @@ package com.example.practice_musicplayer
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
@@ -40,7 +41,29 @@ open class SlidingActivity : AppCompatActivity(){
 //        val text: TextView = findViewById(R.id.text)
 //        val btnShow: Button = findViewById(R.id.btn_show)
 //        val btnHide: Button = findViewById(R.id.btn_hide)
-        binding.nowPlaying123.visibility = View.VISIBLE
+
+        // Convert DP to pixels
+        val pixels = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            65f,
+            resources.displayMetrics
+        ).toInt()
+
+        binding.btnSlide.setOnClickListener {
+            // Slide up the panel when the button is clicked
+            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+        }
+
+        binding.btnVisible.setOnClickListener {
+            // Slide up the panel when the button is clicked
+            slidingLayout.panelHeight = pixels
+        }
+
+
+        binding.btnGone.setOnClickListener {
+            // Slide up the panel when the button is clicked
+            slidingLayout.panelHeight = 0
+        }
 
         // Set up the Sliding UpPanelLayout
         slidingLayout.addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
