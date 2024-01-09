@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.practice_musicplayer.MusicClass
 import com.example.practice_musicplayer.R
 import com.example.practice_musicplayer.databinding.ItemCarouselBinding
+import com.example.practice_musicplayer.databinding.ItemLargeCarouselBinding
 import com.example.practice_musicplayer.databinding.SingleLayoutBinding
 
 
@@ -24,15 +25,17 @@ class AdapterViewPager  (
 ) :
     RecyclerView.Adapter<AdapterViewPager.MyHolder>() {
 
-    class MyHolder(binding: ItemCarouselBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyHolder(binding: ItemLargeCarouselBinding) : RecyclerView.ViewHolder(binding.root) {
         val titleView = binding.mtvItem
+        val titleView1 = binding.mtvItem
         val imageView = binding.imageView
+        val imageView1 = binding.imageView1
         val root = binding.root
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
         return MyHolder(
-            ItemCarouselBinding.inflate(
+            ItemLargeCarouselBinding.inflate(
                 LayoutInflater.from(
                     context
                 ), parent, false
@@ -43,6 +46,7 @@ class AdapterViewPager  (
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
 
         holder.titleView.text = musicList[position].name
+        holder.titleView1.text = musicList[position].name
 
         val myOptions = RequestOptions()
             .centerCrop()
@@ -54,6 +58,14 @@ class AdapterViewPager  (
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .error(R.drawable.image_as_cover)
             .into(holder.imageView)
+
+        Glide
+            .with(context)
+            .applyDefaultRequestOptions(myOptions)
+            .load(musicList[position].coverArtUrl)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .error(R.drawable.image_as_cover)
+            .into(holder.imageView1)
     }
 
     override fun getItemCount(): Int {

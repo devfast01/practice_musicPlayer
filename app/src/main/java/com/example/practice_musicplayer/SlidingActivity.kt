@@ -10,8 +10,11 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.adapters.AdapterViewPager
+import com.example.practice_musicplayer.adapters.MusicAdapter
 import com.example.practice_musicplayer.databinding.ActivitySlidingBinding
 import com.example.practice_musicplayer.fragments.ExamplePlaying
 import com.example.practice_musicplayer.utils.RetrofitService
@@ -25,12 +28,14 @@ import retrofit2.Response
 import java.util.ArrayList
 
 
-open class SlidingActivity : AppCompatActivity(){
-    private lateinit var binding:ActivitySlidingBinding
+open class SlidingActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySlidingBinding
     lateinit var viewPagerAdapter: AdapterViewPager
     private val apiService = RetrofitService.getInstance()
     private var songList: ArrayList<MusicClass>? = null
-
+    lateinit var recyclerView: RecyclerView
+    lateinit var musicAdapter: MusicAdapter
+    private var initialSlide = true
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +46,9 @@ open class SlidingActivity : AppCompatActivity(){
 //        val text: TextView = findViewById(R.id.text)
 //        val btnShow: Button = findViewById(R.id.btn_show)
 //        val btnHide: Button = findViewById(R.id.btn_hide)
+        // Initially hide the sliding panel
+        slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+
 
         // Convert DP to pixels
         val pixels = TypedValue.applyDimension(
@@ -51,19 +59,33 @@ open class SlidingActivity : AppCompatActivity(){
 
         binding.btnSlide.setOnClickListener {
             // Slide up the panel when the button is clicked
-            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+//            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+            if (initialSlide) {
+                // If it's the first slide, set the panel height
+                slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+                initialSlide = false
+            }else {
+                // Toggle the sliding panel when the button is clicked
+                slidingLayout.panelState =
+                    if (slidingLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED)
+                        SlidingUpPanelLayout.PanelState.EXPANDED
+                    else
+                        SlidingUpPanelLayout.PanelState.COLLAPSED
+            }
         }
 
-        binding.btnVisible.setOnClickListener {
-            // Slide up the panel when the button is clicked
-            slidingLayout.panelHeight = pixels
-        }
+//        binding.btnVisible.setOnClickListener {
+//            // Slide up the panel when the button is clicked
+//            slidingLayout.panelHeight = pixels
+//        }
+//
+//
+//        binding.btnGone.setOnClickListener {
+//            // Slide up the panel when the button is clicked
+//            slidingLayout.panelHeight = 0
+//        }
 
 
-        binding.btnGone.setOnClickListener {
-            // Slide up the panel when the button is clicked
-            slidingLayout.panelHeight = 0
-        }
 
         // Set up the Sliding UpPanelLayout
         slidingLayout.addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
@@ -72,9 +94,17 @@ open class SlidingActivity : AppCompatActivity(){
                 Log.e("panel", "Sliding")
             }
 
-            override fun onPanelStateChanged(panel: View?, previousState: SlidingUpPanelLayout.PanelState?, newState: SlidingUpPanelLayout.PanelState?) {
+            override fun onPanelStateChanged(
+                panel: View?,
+                previousState: SlidingUpPanelLayout.PanelState?,
+                newState: SlidingUpPanelLayout.PanelState?,
+            ) {
                 // Do something when the panel state changes
                 Log.e("panel", "Hide")
+                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    // If the panel is collapsed, set it to expanded with the desired height
+                    slidingLayout.panelHeight = pixels
+                }
             }
         })
 
@@ -137,21 +167,27 @@ open class SlidingActivity : AppCompatActivity(){
 //        Log.d("RESPONSE", modelRecyclerArrayList.toString())
 
         songList = modelRecyclerArrayList
+        newSongViewPagerData(songList!!)
         newSongRecycleData(songList!!)
+
     } catch (e: JSONException) {
         e.printStackTrace()
     }
 
-    private fun newSongRecycleData(array: ArrayList<MusicClass>) {
-
-        binding.viewPager.addCarouselEffect()
+    private fun newSongViewPagerData(array: ArrayList<MusicClass>) {
         viewPagerAdapter = AdapterViewPager(this, array)
         binding.viewPager.adapter = viewPagerAdapter
-
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.nowPlaying123.visibility = View.VISIBLE
+    private fun newSongRecycleData(array: ArrayList<MusicClass>) {
+        recyclerView = binding.recycleSliding
+        musicAdapter = MusicAdapter(this, array)
+        recyclerView.adapter = musicAdapter
+        recyclerView.setItemViewCacheSize(50)
+        recyclerView.hasFixedSize()
+        recyclerView.layoutManager = LinearLayoutManager(this@SlidingActivity)
     }
+
+
+
 }
