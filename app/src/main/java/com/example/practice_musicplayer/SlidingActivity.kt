@@ -16,6 +16,7 @@ import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.adapters.AdapterViewPager
 import com.example.practice_musicplayer.adapters.MusicAdapter
 import com.example.practice_musicplayer.databinding.ActivitySlidingBinding
+import com.example.practice_musicplayer.databinding.ItemLargeCarouselBinding
 import com.example.practice_musicplayer.fragments.ExamplePlaying
 import com.example.practice_musicplayer.utils.RetrofitService
 import com.example.practice_musicplayer.utils.ViewPagerExtensions.addCarouselEffect
@@ -30,6 +31,7 @@ import java.util.ArrayList
 
 open class SlidingActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySlidingBinding
+    private var itemLayoutBinding: ItemLargeCarouselBinding? = null
     lateinit var viewPagerAdapter: AdapterViewPager
     private val apiService = RetrofitService.getInstance()
     private var songList: ArrayList<MusicClass>? = null
@@ -57,6 +59,8 @@ open class SlidingActivity : AppCompatActivity() {
             resources.displayMetrics
         ).toInt()
 
+
+
         binding.btnSlide.setOnClickListener {
             // Slide up the panel when the button is clicked
 //            slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
@@ -71,6 +75,7 @@ open class SlidingActivity : AppCompatActivity() {
                         SlidingUpPanelLayout.PanelState.EXPANDED
                     else
                         SlidingUpPanelLayout.PanelState.COLLAPSED
+                        itemLayoutBinding!!.smalCard.visibility = View.INVISIBLE
             }
         }
 
@@ -102,6 +107,7 @@ open class SlidingActivity : AppCompatActivity() {
                 // Do something when the panel state changes
                 Log.e("panel", "Hide")
                 if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    itemLayoutBinding!!.smalCard.visibility = View.VISIBLE
                     // If the panel is collapsed, set it to expanded with the desired height
                     slidingLayout.panelHeight = pixels
                 }

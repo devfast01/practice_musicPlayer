@@ -137,8 +137,6 @@ fun setSongPosition(increment: Boolean) {
     }
 }
 
-
-
 fun getNewSongs() {
     val api_Service = RetrofitService.getInstance()
 
