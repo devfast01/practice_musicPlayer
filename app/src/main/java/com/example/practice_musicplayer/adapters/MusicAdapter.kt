@@ -79,7 +79,6 @@ class MusicAdapter(
                         sendIntent(position = position, parameter = "MusicAdapter")
                     }
                 }
-
             }
         }
     }
@@ -98,5 +97,4 @@ class MusicAdapter(
         intent.putExtra("class", parameter)
         ContextCompat.startActivity(context, intent, null)
     }
-
 }

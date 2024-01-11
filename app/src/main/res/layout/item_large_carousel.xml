@@ -11,12 +11,12 @@
             android:id="@+id/mcv_card1"
             style="@style/Widget.Material3.CardView.Elevated"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:visibility="visible"
             app:cardBackgroundColor="@color/cardview_dark_background">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/imgSmall"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="25dp"
@@ -41,7 +41,20 @@
                 app:layout_constraintStart_toEndOf="@id/imageView"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.9"
-                tools:text="@string/app_name" />
+                tools:text="song name" />
+
+            <ImageButton
+                android:id="@+id/fragmentButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="15dp"
+                android:contentDescription="@string/cover"
+                android:src="@drawable/play_now"
+                app:tint="@color/white"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -56,7 +69,7 @@
         app:cardBackgroundColor="@color/cardview_dark_background">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imgLarge"
             android:layout_width="360dp"
             android:layout_height="360dp"
             android:layout_marginTop="60dp"
