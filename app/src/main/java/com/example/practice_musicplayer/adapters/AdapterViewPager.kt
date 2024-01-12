@@ -2,7 +2,9 @@ package com.example.practice_musicplayer.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -16,6 +18,7 @@ import com.example.practice_musicplayer.R
 import com.example.practice_musicplayer.databinding.ItemCarouselBinding
 import com.example.practice_musicplayer.databinding.ItemLargeCarouselBinding
 import com.example.practice_musicplayer.databinding.SingleLayoutBinding
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.squareup.picasso.Picasso
 
 
@@ -24,6 +27,7 @@ class AdapterViewPager  (
     private var musicList: ArrayList<MusicClass>,
     private val playlistDetails: Boolean = false,
     private val selectionActivity: Boolean = false,
+
 ) :
     RecyclerView.Adapter<AdapterViewPager.MyHolder>() {
 
@@ -47,7 +51,7 @@ class AdapterViewPager  (
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-
+//
         holder.songName_Up.text = musicList[position].name
         holder.songName.text = musicList[position].name
         holder.singerName.text = musicList[position].artist
@@ -80,32 +84,4 @@ class AdapterViewPager  (
     override fun getItemCount(): Int {
         return musicList.size
     }
-
 }
-
-//
-//class AdapterViewPager : ListAdapter<String, AdapterViewPager.CustomViewHolder>(customDiffUtils) {
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
-//        val layoutInflater = LayoutInflater.from(parent.context)
-//        val binding = DataBindingUtil.inflate<ItemCarouselBinding>(layoutInflater, R.layout.item_carousel, parent, false)
-//        return CustomViewHolder(binding)
-//    }
-//
-//    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-//        holder.binding.item = getItem(position)
-//    }
-//
-//    inner class CustomViewHolder(val binding: ItemCarouselBinding) : RecyclerView.ViewHolder(binding.root)
-//
-//    companion object {
-//        val customDiffUtils = object : DiffUtil.ItemCallback<String>() {
-//            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-//                return oldItem == newItem
-//            }
-//
-//            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-//                return oldItem == newItem
-//            }
-//        }
-//    }
-//}

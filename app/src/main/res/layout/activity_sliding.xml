@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".SlidingActivity">
 
-    <!--    <androidx.fragment.app.FragmentContainerView-->
-    <!--        android:id="@+id/nowPlaying"-->
-    <!--        android:name="com.example.practice_musicplayer.fragments.ExamplePlaying"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_alignParentBottom="true"-->
-    <!--        android:layout_marginStart="10dp"-->
-    <!--        android:layout_marginEnd="10dp"-->
-    <!--        android:layout_marginBottom="10dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        tools:layout="@layout/fragment_example_playing" />-->
-
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
@@ -46,28 +32,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="15dp"
                 android:text="slide" />
-
-<!--            <Button-->
-<!--                android:id="@+id/btn_Gone"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@+id/btn_slide"-->
-<!--                android:layout_marginStart="230dp"-->
-<!--                android:layout_marginTop="1dp"-->
-<!--                android:layout_marginEnd="5dp"-->
-<!--                android:layout_marginRight="15dp"-->
-<!--                android:layout_marginBottom="5dp"-->
-<!--                android:text="Invisible" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btn_Visible"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@+id/btn_slide"-->
-<!--                android:layout_marginStart="5dp"-->
-<!--                android:layout_marginTop="1dp"-->
-<!--                android:layout_marginEnd="230dp"-->
-<!--                android:text="Visible" />-->
+            
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleSliding"

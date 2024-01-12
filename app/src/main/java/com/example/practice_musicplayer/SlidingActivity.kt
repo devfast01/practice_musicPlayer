@@ -4,30 +4,21 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
-import android.view.Gravity
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.adapters.AdapterViewPager
 import com.example.practice_musicplayer.adapters.MusicAdapter
 import com.example.practice_musicplayer.databinding.ActivitySlidingBinding
 import com.example.practice_musicplayer.databinding.ItemLargeCarouselBinding
-import com.example.practice_musicplayer.fragments.ExamplePlaying
 import com.example.practice_musicplayer.utils.RetrofitService
-import com.example.practice_musicplayer.utils.ViewPagerExtensions.addCarouselEffect
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
-
 
 open class SlidingActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySlidingBinding
@@ -38,6 +29,9 @@ open class SlidingActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
     lateinit var musicAdapter: MusicAdapter
     private var initialSlide = true
+
+    // Your current position variable
+    var currentPosition: Int = 0
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,15 +45,12 @@ open class SlidingActivity : AppCompatActivity() {
         // Initially hide the sliding panel
         slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
 
-
         // Convert DP to pixels
         val pixels = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             65f,
             resources.displayMetrics
         ).toInt()
-
-
 
         binding.btnSlide.setOnClickListener {
             // Slide up the panel when the button is clicked
@@ -68,14 +59,14 @@ open class SlidingActivity : AppCompatActivity() {
                 // If it's the first slide, set the panel height
                 slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
                 initialSlide = false
-            }else {
+            } else {
                 // Toggle the sliding panel when the button is clicked
                 slidingLayout.panelState =
                     if (slidingLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED)
                         SlidingUpPanelLayout.PanelState.EXPANDED
                     else
                         SlidingUpPanelLayout.PanelState.COLLAPSED
-                        itemLayoutBinding!!.smalCard.visibility = View.INVISIBLE
+                itemLayoutBinding!!.smalCard.visibility = View.INVISIBLE
             }
         }
 
@@ -91,12 +82,12 @@ open class SlidingActivity : AppCompatActivity() {
 //        }
 
 
-
         // Set up the Sliding UpPanelLayout
         slidingLayout.addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
+
             override fun onPanelSlide(panel: View?, slideOffset: Float) {
                 // Do something when the panel is sliding
-                Log.e("panel", "Sliding")
+                Log.e("panel", "offset $slideOffset")
             }
 
             override fun onPanelStateChanged(
@@ -107,7 +98,6 @@ open class SlidingActivity : AppCompatActivity() {
                 // Do something when the panel state changes
                 Log.e("panel", "Hide")
                 if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    itemLayoutBinding!!.smalCard.visibility = View.VISIBLE
                     // If the panel is collapsed, set it to expanded with the desired height
                     slidingLayout.panelHeight = pixels
                 }
@@ -193,7 +183,6 @@ open class SlidingActivity : AppCompatActivity() {
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(this@SlidingActivity)
     }
-
 
 
 }
