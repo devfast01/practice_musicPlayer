@@ -1,35 +1,42 @@
 package com.example.practice_musicplayer.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.practice_musicplayer.MusicClass
 import com.example.practice_musicplayer.R
-import com.example.practice_musicplayer.databinding.ItemCarouselBinding
 import com.example.practice_musicplayer.databinding.ItemLargeCarouselBinding
-import com.example.practice_musicplayer.databinding.SingleLayoutBinding
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import com.squareup.picasso.Picasso
-
+import com.google.android.material.card.MaterialCardView
 
 class AdapterViewPager  (
     private val context: Context,
+    private var statePanel: Boolean,
     private var musicList: ArrayList<MusicClass>,
-    private val playlistDetails: Boolean = false,
-    private val selectionActivity: Boolean = false,
-
-) :
+    ) :
     RecyclerView.Adapter<AdapterViewPager.MyHolder>() {
+    private var selectedPosition: Int = 0
+
+    fun setSelectedPosition(position: Int) {
+        selectedPosition = position
+        notifyDataSetChanged()  // Notify the adapter that data has changed
+    }
+
+//    fun updateSmalCardVisibility(isVisible: Float) {
+//        // Iterate through all views and update visibility
+//        for (i in 0 until itemCount) {
+//            val viewHolder = viewPager.findViewWithTag<MyHolder>(i)
+//            viewHolder?.itemView?.findViewById<MaterialCardView>(R.id.smalCard)?.visibility =
+//                if (isVisible< 0.5) View.VISIBLE else View.INVISIBLE
+//        }
+//    }
 
     class MyHolder(binding: ItemLargeCarouselBinding) : RecyclerView.ViewHolder(binding.root) {
         val songName_Up = binding.mtvItem
@@ -50,8 +57,18 @@ class AdapterViewPager  (
         )
     }
 
+    @SuppressLint("CutPasteId", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-//
+//        val isVisible = (position - 1) == selectedPosition
+//        holder.itemView.findViewById<MaterialCardView>(R.id.smalCard).visibility =
+//            if (isVisible) View.VISIBLE else View.GONE
+
+//        holder.itemView.findViewById<MaterialCardView>(R.id.smalCard)
+//            .tag = "smalCardTag$position"
+
+            holder.itemView.findViewById<MaterialCardView>(R.id.smalCard).visibility =
+            if (statePanel) View.VISIBLE else View.GONE
+
         holder.songName_Up.text = musicList[position].name
         holder.songName.text = musicList[position].name
         holder.singerName.text = musicList[position].artist
@@ -84,4 +101,14 @@ class AdapterViewPager  (
     override fun getItemCount(): Int {
         return musicList.size
     }
+
+//    fun updateSmalCardVisibility(selectedPosition: Int) {
+//        // Iterate through all views and update visibility
+//        for (i in 0 until itemCount) {
+//            val isVisible = i == selectedPosition
+//            val viewHolder = findViewHolderForAdapterPosition(i) as? MyHolder
+//            viewHolder?.itemView?.findViewById<MaterialCardView>(R.id.smalCard)?.visibility =
+//                if (isVisible) View.VISIBLE else View.INVISIBLE
+//        }
+//    }
 }

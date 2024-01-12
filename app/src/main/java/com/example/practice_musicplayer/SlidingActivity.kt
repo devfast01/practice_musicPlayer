@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.practice_musicplayer.adapters.AdapterViewPager
 import com.example.practice_musicplayer.adapters.MusicAdapter
 import com.example.practice_musicplayer.databinding.ActivitySlidingBinding
@@ -22,13 +23,13 @@ import retrofit2.Response
 
 open class SlidingActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySlidingBinding
-    private var itemLayoutBinding: ItemLargeCarouselBinding? = null
     lateinit var viewPagerAdapter: AdapterViewPager
     private val apiService = RetrofitService.getInstance()
     private var songList: ArrayList<MusicClass>? = null
     lateinit var recyclerView: RecyclerView
     lateinit var musicAdapter: MusicAdapter
     private var initialSlide = true
+    var statePanel: Boolean = false
 
     // Your current position variable
     var currentPosition: Int = 0
@@ -66,21 +67,8 @@ open class SlidingActivity : AppCompatActivity() {
                         SlidingUpPanelLayout.PanelState.EXPANDED
                     else
                         SlidingUpPanelLayout.PanelState.COLLAPSED
-                itemLayoutBinding!!.smalCard.visibility = View.INVISIBLE
             }
         }
-
-//        binding.btnVisible.setOnClickListener {
-//            // Slide up the panel when the button is clicked
-//            slidingLayout.panelHeight = pixels
-//        }
-//
-//
-//        binding.btnGone.setOnClickListener {
-//            // Slide up the panel when the button is clicked
-//            slidingLayout.panelHeight = 0
-//        }
-
 
         // Set up the Sliding UpPanelLayout
         slidingLayout.addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
@@ -88,8 +76,14 @@ open class SlidingActivity : AppCompatActivity() {
             override fun onPanelSlide(panel: View?, slideOffset: Float) {
                 // Do something when the panel is sliding
                 Log.e("panel", "offset $slideOffset")
+                // Iterate through all items in the ViewPager and update the visibility of smalCard
+                val smalCard = binding.viewPager.findViewWithTag<View>("smalCardTag")
+                smalCard?.visibility = if (slideOffset <= 0.5) View.VISIBLE else View.GONE
+
+
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun onPanelStateChanged(
                 panel: View?,
                 previousState: SlidingUpPanelLayout.PanelState?,
@@ -101,11 +95,26 @@ open class SlidingActivity : AppCompatActivity() {
                     // If the panel is collapsed, set it to expanded with the desired height
                     slidingLayout.panelHeight = pixels
                 }
+                statePanel = if (statePanel) false else true
+                viewPagerAdapter.notifyDataSetChanged()
             }
         })
 
+//        val smalCard = binding.viewPager.findViewWithTag<View>("smalCardTag")
+//        smalCard?.visibility = if (offetSlide <= 0.5) View.VISIBLE else View.INVISIBLE
+
+//        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//
+//                // Update the visibility of smalCard based on the selected page
+//                viewPagerAdapter.setSelectedPosition(position)
+//            }
+//        })
+
         getNewSongs()
     }
+
 
     private fun getNewSongs() {
         val apiService =
@@ -171,7 +180,7 @@ open class SlidingActivity : AppCompatActivity() {
     }
 
     private fun newSongViewPagerData(array: ArrayList<MusicClass>) {
-        viewPagerAdapter = AdapterViewPager(this, array)
+        viewPagerAdapter = AdapterViewPager(this,statePanel, array)
         binding.viewPager.adapter = viewPagerAdapter
     }
 

@@ -93,17 +93,17 @@ class ViewPager : AppCompatActivity() {
 //        Log.d("RESPONSE", modelRecyclerArrayList.toString())
 
         songList = modelRecyclerArrayList
-        newSongRecycleData(songList!!)
+//        newSongRecycleData(songList!!)
     } catch (e: JSONException) {
         e.printStackTrace()
     }
 
-    private fun newSongRecycleData(array: ArrayList<MusicClass>) {
-
-        binding.viewPager.addCarouselEffect()
-        viewPagerAdapter = AdapterViewPager(this, array)
-        binding.viewPager.adapter = viewPagerAdapter
-
-    }
+//    private fun newSongRecycleData(array: ArrayList<MusicClass>) {
+//
+//        binding.viewPager.addCarouselEffect()
+//        viewPagerAdapter = AdapterViewPager(this,binding.viewPager, array, )
+//        binding.viewPager.adapter = viewPagerAdapter
+//
+//    }
 
 }

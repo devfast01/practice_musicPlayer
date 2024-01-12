@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:visibility="visible"
+            android:tag="smalCardTag"
             app:cardBackgroundColor="@color/cardview_dark_background">
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -63,7 +64,6 @@
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:layout_below="@+id/smalCard"
         android:visibility="visible"
         app:cardBackgroundColor="@color/cardview_dark_background">
