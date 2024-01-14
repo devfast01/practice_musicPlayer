@@ -63,7 +63,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
     //slidingUp layout
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
-    // Picasso img loader
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    // for music player exoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.14.0'
 
 }

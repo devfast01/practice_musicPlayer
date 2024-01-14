@@ -21,11 +21,13 @@ import androidx.core.app.NotificationCompat
 import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.fragments.NowPlaying
 import com.example.practice_musicplayer.utils.ApplicationClass
+import com.google.android.exoplayer2.ExoPlayer
 
 @Suppress("DEPRECATION")
 class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
     private var myBinder = MyBinder()
     var mediaPlayer: MediaPlayer? = null
+    var exoPlayer: ExoPlayer? = null
     private lateinit var mediaSession: MediaSessionCompat
     private lateinit var runnable: Runnable
     lateinit var audioManager: AudioManager
