@@ -17,14 +17,14 @@ import com.example.practice_musicplayer.SlidingActivity
 import com.example.practice_musicplayer.databinding.ItemLargeCarouselBinding
 import com.google.android.material.card.MaterialCardView
 
-class AdapterViewPager  (
+class AdapterViewPager(
     private val context: Context,
     private var musicList: ArrayList<MusicClass>,
-    ) :
+) :
     RecyclerView.Adapter<AdapterViewPager.MyHolder>() {
 
     class MyHolder(binding: ItemLargeCarouselBinding) : RecyclerView.ViewHolder(binding.root) {
-        val songName_Up = binding.mtvItem
+        val songNameUp = binding.mtvItem
         val songName = binding.songName
         val singerName = binding.singerName
         val imgSmall = binding.imgSmall
@@ -45,10 +45,10 @@ class AdapterViewPager  (
     @SuppressLint("CutPasteId", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
 
-            holder.itemView.findViewById<MaterialCardView>(R.id.smalCard).visibility =
+        holder.itemView.findViewById<MaterialCardView>(R.id.smalCard).visibility =
             if (SlidingActivity.statePanel) View.GONE else View.VISIBLE
 
-        holder.songName_Up.text = musicList[position].name
+        holder.songNameUp.text = musicList[position].name
         holder.songName.text = musicList[position].name
         holder.singerName.text = musicList[position].artist
 

@@ -6,8 +6,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
-import android.content.pm.ServiceInfo
-import android.graphics.BitmapFactory
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Binder
@@ -20,7 +18,6 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.view.KeyEvent
 import androidx.core.app.NotificationCompat
-import androidx.core.app.ServiceCompat
 import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.fragments.NowPlaying
 import com.example.practice_musicplayer.utils.ApplicationClass

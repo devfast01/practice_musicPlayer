@@ -59,9 +59,8 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/mcv_card"
-        style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/smalCard"
@@ -111,6 +110,6 @@
             app:layout_constraintWidth_percent="0.9"
             tools:text="Singer Name" />
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
     </RelativeLayout>
 </layout>
