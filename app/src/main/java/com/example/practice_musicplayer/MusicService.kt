@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Binder
@@ -13,7 +14,9 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+
 import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.view.KeyEvent
@@ -21,6 +24,12 @@ import androidx.core.app.NotificationCompat
 import com.example.practice_musicplayer.activities.MusicInterface
 import com.example.practice_musicplayer.fragments.NowPlaying
 import com.example.practice_musicplayer.utils.ApplicationClass
+import com.google.android.exoplayer2.DefaultLoadControl
+import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 
 @Suppress("DEPRECATION")
 class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
@@ -224,7 +233,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
                 }
             })
         }
-            startForeground(1, notification)
+        startForeground(1, notification)
     }
 
     fun initSong() {

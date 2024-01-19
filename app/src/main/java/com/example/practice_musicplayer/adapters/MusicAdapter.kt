@@ -51,6 +51,8 @@ class MusicAdapter(
         holder.albumName.text = musicList[position].artist
         holder.duration.text = musicList[position].duration
 
+
+
         val myOptions = RequestOptions()
             .centerCrop()
             .override(100, 100)
@@ -91,6 +93,7 @@ class MusicAdapter(
         musicList.addAll(searchList)
         notifyDataSetChanged()
     }
+
     private fun sendIntent(position: Int, parameter: String) {
         val intent = Intent(context, MusicInterface::class.java)
         intent.putExtra("index", position)

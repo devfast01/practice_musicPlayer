@@ -33,6 +33,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        //noinspection DataBindingWithoutKapt
         dataBinding true
     }
 }
@@ -64,6 +65,7 @@ dependencies {
     //slidingUp layout
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     // for music player exoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.14.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
 
 }
